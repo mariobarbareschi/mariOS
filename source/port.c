@@ -62,9 +62,7 @@ __attribute__(( naked )) void PendSV_Handler(){
 
 			" 	mrs		r0, psp 		\n" //Get the current stack pointer
 			"   isb						\n" //Flushes pipe
-			" 	subs	r0, #32 		\n" //go 32 bytes ahead to push over 8 remaining regs
-			" 	stmia	r0!,{r4-r11} 	\n"
-			" 	subs	r0, #32 		\n"	//Restore the pristine state
+			" 	stmdb	r0!,{r4-r11} 	\n" //Save the remaining registers
 
 			/*
 			+------+

@@ -40,7 +40,7 @@ int main(void)
 	osKernelStart();
 
 	//The program should never reach this point
-	Default_Handler();
+	Error_Handler();
 	for(;;);
 }
 
@@ -70,4 +70,5 @@ static void task3_handler(void)
 
 void Error_Handler(){
 	BSP_LED_On(LED3);
+	for(;;);
 }
