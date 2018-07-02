@@ -6,6 +6,8 @@
  */
 
 #include "port.h"
+#include "marios_config.h"
+
 
 void loadFirstTask(){
 	__asm volatile(	//TODO: take the pristine system stack from VTOR
@@ -102,10 +104,19 @@ __attribute__(( naked )) void PendSV_Handler(){
 			" 	msr	psp, r0 			\n"
 			//Note that remaining registers are going to be automatically restored by returning from the ISR
 			/* EXC_RETURN - Thread mode with PSP: */
-			"	ldr r0, =0xFFFFFFFD						\n"
+			"	orr r14, #0xd						\n"
 			/* Enable interrupts: */
 			" 	cpsie	i 			\n"
 			"	isb						\n"
-			" 	bx	r0 			\n"
+			" 	bx	r14 			\n"
 		);
 	}
+
+void enterCriticalRegion()
+{
+	__disable_irq();
+}
+void exitCriticalRegion()
+{
+	__enable_irq();
+}

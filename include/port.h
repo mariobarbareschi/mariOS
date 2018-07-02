@@ -12,4 +12,7 @@ void loadFirstTask();
 void SVC_Handler();
 void PendSV_Handler() __attribute__ (( naked ));
 
+void enterCriticalRegion();
+void exitCriticalRegion();
+
 #endif /* PORT_H_ */
