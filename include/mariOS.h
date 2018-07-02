@@ -2,6 +2,7 @@
 #define MARIOS_H
 
 #include "marios_config.h"
+#include "port.h"
 
 typedef uint32_t marios_stack_t;
 typedef uint16_t marios_task_id_t;

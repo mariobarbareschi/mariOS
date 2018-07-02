@@ -1,4 +1,4 @@
-#include "marios.h"
+#include "mariOS.h"
 
 typedef enum
 {
@@ -101,16 +101,7 @@ int marios_start(uint32_t systick_ticks)
 	/* Start the first task: should be the first non-idle */
 	marios_curr_task = &m_task_table.tasks[m_task_table.current_task];
 
-	__asm volatile(		//TODO: take the pristine system stack from VTOR
-						" ldr r0,=_estack 		\n" //Take the original master stack pointer from the system startup
-						" msr msp, r0			\n" // Set the msp back to the start of the stack
-						" cpsie i				\n" //enable interrupt for getting the SWI 0
-						" cpsie f				\n"
-						" dsb					\n"
-						" isb					\n" //flush the pipe
-						" svc 0					\n" // we invoke a SWI to start first task. */
-						" nop					\n"
-					);
+	loadFirstTask();
 	//This point should be never reached
 	return 0;
 }

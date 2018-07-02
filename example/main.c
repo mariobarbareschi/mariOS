@@ -35,10 +35,12 @@ int main(void)
 	osThreadCreate(&task2, NULL);
 	osThreadCreate(&task3, NULL);
 
+	BSP_LED_Off(LED3);
+
 	osKernelStart();
 
 	//The program should never reach this point
-	BSP_LED_On(LED3);
+	Default_Handler();
 	for(;;);
 }
 
@@ -64,4 +66,8 @@ static void task3_handler(void)
 		BSP_LED_Toggle(LED6);
 		osDelay(4000);
 	}
+}
+
+void Error_Handler(){
+	BSP_LED_On(LED3);
 }
