@@ -10,15 +10,18 @@
 
 
 void loadFirstTask(){
-	__asm volatile(	//TODO: take the pristine system stack from VTOR
-					" ldr r0,=_estack 		\n" //Take the original master stack pointer from the system startup
+	__asm volatile(	//" ldr r0,=_estack 		\n" //Take the original master stack pointer from the system startup
+					" ldr R0,=0xE000ED08 	\n" //Set R0 to VTOR address
+					" ldr r0, [r0] 			\n" //Load VTOR
+					" ldr r0, [r0] 			\n" //Load initial MSP value
 					" msr msp, r0			\n" // Set the msp back to the start of the stack
 					" cpsie i				\n" //enable interrupt for getting the SWI 0
-					" cpsie f				\n"
-					" dsb					\n"
-					" isb					\n" //flush the pipe
+					" dsb					\n" //No instruction in program order after this instruction executes until this instruction completes
+					" isb					\n" //It ensures that the effects of context altering operations, such as changing the ASID, or completed TLB maintenance operations, or branch predictor maintenance operations
 					" svc 0					\n" // we invoke a SWI to start first task. */
 					" nop					\n"
+					" .align 2				\n"
+
 	);
 
 }
@@ -62,9 +65,10 @@ __attribute__(( naked )) void PendSV_Handler(){
 
 			*/
 
-			" 	mrs		r0, psp 		\n" //Get the current stack pointer
-			"   isb						\n" //Flushes pipe
-			" 	stmdb	r0!,{r4-r11} 	\n" //Save the remaining registers
+			" mrs		r0, psp 			\n" //Get the current stack pointer
+			" dsb							\n"
+			" isb							\n" //Flushes pipe
+			" stmdb	r0!,{r4-r11} 			\n" //Save the remaining registers
 
 			/*
 			+------+
@@ -88,27 +92,29 @@ __attribute__(( naked )) void PendSV_Handler(){
 			+------+
 			*/
 			/* Save current task's SP: */
-			" 	ldr	r2, =marios_curr_task 			\n"
-			" 	ldr	r1, [r2] 			\n"
-			" 	str	r0, [r1] 			\n"
+			" ldr	r2, =marios_curr_task 	\n"
+			" ldr	r1, [r2] 				\n"
+			" str	r0, [r1] 				\n"
 
 			//Now we are ready to load the new context overwriting the one into the CPU
 
 			/* Load next task's SP: */
-			" 	ldr	r2, =marios_next_task 			\n"
-			" 	ldr	r1, [r2] 			\n"
-			" 	ldr	r0, [r1] //Got the stack pointer 			\n"
+			" ldr	r2, =marios_next_task 	\n"
+			" ldr	r1, [r2] 				\n"
+			" ldr	r0, [r1] 				\n"//Got the stack pointer
 
 			//The process is pretty much like the same, but we pull instead
-			" 	ldmia	r0!,{r4-r11} 			\n"
-			" 	msr	psp, r0 			\n"
+			" ldmia	r0!,{r4-r11} 			\n"
+			" msr	psp, r0 				\n"
 			//Note that remaining registers are going to be automatically restored by returning from the ISR
 			/* EXC_RETURN - Thread mode with PSP: */
-			"	orr r14, #0xd						\n"
+			" orr r14, #0xd					\n"
 			/* Enable interrupts: */
-			" 	cpsie	i 			\n"
-			"	isb						\n"
-			" 	bx	r14 			\n"
+			" cpsie	i	 					\n"
+			" dsb							\n"
+			"isb							\n"
+			" bx	r14 					\n"
+			" .align 2						\n"
 		);
 	}
 

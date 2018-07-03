@@ -49,7 +49,7 @@ marios_task_id_t marios_task_init(void (*handler)(void), uint32_t stack_size)
 	p_task->handler = handler;
 	marios_stack_t *p_stack = (marios_stack_t*) malloc(128*sizeof(marios_stack_t));
 	p_task->sp = (uint32_t)(p_stack+stack_size-16);
-	p_task->status = OS_TASK_STATUS_READY;
+	p_task->status = MARIOS_TASK_STATUS_READY;
 	p_task->wait_ticks = 0;
 
 	/* Here some special registers are defined and they  will be restored on exception return, namely:
@@ -59,8 +59,6 @@ marios_task_id_t marios_task_init(void (*handler)(void), uint32_t stack_size)
 	p_stack[stack_size-1] = 0x01000000;
 	p_stack[stack_size-2] = (uint32_t)handler;
 	p_stack[stack_size-3] = (uint32_t) &task_finished;
-
-	p_stack[stack_size-10] = (uint32_t) (m_task_table.size+1);
 
 	m_task_table.size++;
 
@@ -91,15 +89,14 @@ void marios_systick_handler(void)
 	++mariosTicks;
 
 	int i;
-	for(i = 1; i < m_task_table.size; i++) //loop over tasks except for idle
+	for(i = 1; i < m_task_table.size; i++) //loop over tasks except for idle one
 	{	//Remove tasks from suspend state if "wait_ticks" elapses
 		//Does not matter mariosTicks overflow, since we are checking the equality
-		if(OS_TASK_STATUS_WAIT == m_task_table.tasks[i].status && m_task_table.tasks[i].wait_ticks == mariosTicks){
-			m_task_table.tasks[i].status = OS_TASK_STATUS_READY;
+		if(MARIOS_TASK_STATUS_WAIT == m_task_table.tasks[i].status && m_task_table.tasks[i].wait_ticks == mariosTicks){
+			m_task_table.tasks[i].status = MARIOS_TASK_STATUS_READY;
 			m_task_table.tasks[i].wait_ticks = 0;
 		}
 	}
-
 	marios_task_yield();
 }
 
@@ -119,8 +116,8 @@ void marios_scheduler(void)
 {
 	marios_curr_task = &m_task_table.tasks[m_task_table.current_task];
 
-	if(OS_TASK_STATUS_ACTIVE == marios_curr_task->status)
-		marios_curr_task->status = OS_TASK_STATUS_READY;
+	if(MARIOS_TASK_STATUS_ACTIVE == marios_curr_task->status)
+		marios_curr_task->status = MARIOS_TASK_STATUS_READY;
 
 	/* Select next task: */
 	int i = 0;
@@ -130,19 +127,19 @@ void marios_scheduler(void)
 		if (m_task_table.current_task >= m_task_table.size)
 			m_task_table.current_task = 1; //let's skip idle
 
-	} while(i < m_task_table.size && OS_TASK_STATUS_READY != m_task_table.tasks[m_task_table.current_task].status);
+	} while(i < m_task_table.size && MARIOS_TASK_STATUS_READY != m_task_table.tasks[m_task_table.current_task].status);
 	if( i == m_task_table.size ) //if we cycled over the task table, the only suitable task is the idle
 	{
 		m_task_table.current_task = 0;
 	}
 
 	marios_next_task = &m_task_table.tasks[m_task_table.current_task];
-	marios_next_task->status = OS_TASK_STATUS_ACTIVE;
+	marios_next_task->status = MARIOS_TASK_STATUS_ACTIVE;
 }
 
 void marios_delay(uint32_t ticks){
 	enterCriticalRegion(); //Here the yield and scheduling must be protected against other incoming interrupts
-	m_task_table.tasks[m_task_table.current_task].status = OS_TASK_STATUS_WAIT;
+	m_task_table.tasks[m_task_table.current_task].status = MARIOS_TASK_STATUS_WAIT;
 	m_task_table.tasks[m_task_table.current_task].wait_ticks = mariosTicks+ticks;
 	marios_task_yield();
 	exitCriticalRegion();
@@ -166,7 +163,6 @@ marios_task_status_t get_task_status(unsigned int task_id)
 {
 	return m_task_table.tasks[task_id].status;
 }
-
 
 marios_task_status_t get_current_task_status(void)
 {

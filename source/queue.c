@@ -37,7 +37,7 @@ void enqueue(marios_queue* queue, int8_t* msg, unsigned int msg_size)
 				if(msg_size > queue->freeMemory) //Check available space and yield if no enough space
 				{
 					queue->tasks_waiting_to_send[get_current_task_id()] = 1;
-					set_current_task_status(OS_TASK_STATUS_SUSPEND);
+					set_current_task_status(MARIOS_TASK_STATUS_SUSPEND);
 					marios_task_yield();
 				}
 				else //Space available
@@ -59,7 +59,7 @@ void enqueue(marios_queue* queue, int8_t* msg, unsigned int msg_size)
 					for(i = 0; i < MARIOS_CONFIG_MAX_TASKS; i++)
 						if(1 == queue->tasks_waiting_to_receive[i])
 						{
-							set_task_status(i, OS_TASK_STATUS_READY);
+							set_task_status(i, MARIOS_TASK_STATUS_READY);
 							queue->tasks_waiting_to_receive[i] = 0;
 						}
 					writtenFlag = 1;
@@ -85,10 +85,10 @@ void dequeue(marios_queue* queue, int8_t* msg, unsigned int msg_size)
 				if(MARIOS_QUEUE_UNLOCKED == queue->rLock)
 				{
 					queue->rLock = MARIOS_QUEUE_LOCKED;
-					if(msg_size >= (queue->size - queue->freeMemory)) //Check wether Is the queue containing at least one msg
+					if(msg_size > (queue->size - queue->freeMemory)) //Check whether Is the queue containing at least one msg
 					{
 						queue->tasks_waiting_to_receive[get_current_task_id()] = 1;
-						set_current_task_status(OS_TASK_STATUS_SUSPEND);
+						set_current_task_status(MARIOS_TASK_STATUS_SUSPEND);
 						marios_task_yield();
 					}
 					else //There is at least one msg
@@ -110,7 +110,7 @@ void dequeue(marios_queue* queue, int8_t* msg, unsigned int msg_size)
 						for(i = 0; i < MARIOS_CONFIG_MAX_TASKS; i++)
 							if(1 == queue->tasks_waiting_to_send[i])
 							{
-								set_task_status(i, OS_TASK_STATUS_READY);
+								set_task_status(i, MARIOS_TASK_STATUS_READY);
 								queue->tasks_waiting_to_send[i] = 0;
 							}
 						receivedFlag = 1;

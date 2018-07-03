@@ -9,10 +9,10 @@ typedef uint16_t marios_task_id_t;
 
 typedef enum
 {
-	OS_TASK_STATUS_READY = 1,
-	OS_TASK_STATUS_ACTIVE,
-	OS_TASK_STATUS_WAIT,
-	OS_TASK_STATUS_SUSPEND
+	MARIOS_TASK_STATUS_READY = 1,
+	MARIOS_TASK_STATUS_ACTIVE,
+	MARIOS_TASK_STATUS_WAIT,
+	MARIOS_TASK_STATUS_SUSPEND
 } marios_task_status_t;
 
 volatile uint32_t mariosTicks;

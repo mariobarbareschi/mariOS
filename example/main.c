@@ -74,7 +74,8 @@ static void task2_handler(void)
 
 static void task3_handler(void)
 {
-	while (1) {
+	while (1)
+	{
 		BSP_LED_Toggle(LED6);
 		osDelay(4000);
 	}
@@ -83,11 +84,13 @@ static void task3_handler(void)
 static void task4_handler(void)
 {
 	uint32_t msg = 0;
-	while (1) {
+	while (1)
+	{
 		if(GPIO_PIN_SET == BSP_PB_GetState(BUTTON_KEY))
 		{
 			msg = 1-msg;
 			enqueue(queueMsg, (uint8_t*) & msg, sizeof(uint32_t));
+			while(GPIO_PIN_SET == BSP_PB_GetState(BUTTON_KEY));
 		}
 		osDelay(100);
 	}
@@ -96,18 +99,20 @@ static void task4_handler(void)
 static void task5_handler(void)
 {
 	uint32_t msg;
-	while (1) {
+	while (1)
+	{
 		dequeue(queueMsg, (uint8_t*) & msg, sizeof(uint32_t));
-		if(msg == 0)
+		if(msg == 1)
 			BSP_LED_On(LED3);
 		else
 			BSP_LED_Off(LED3);
 
-		osDelay(1000);
+		osDelay(100);
 	}
 }
 
-void Error_Handler(){
+void Error_Handler()
+{
 	BSP_LED_On(LED3);
 	for(;;);
 }
