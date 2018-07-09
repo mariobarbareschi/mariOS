@@ -23,7 +23,7 @@ static void mariOSidle()
 	}
 }
 
-static void task_finished(void)
+static void task_completion(void)
 {
 	/* This function is called when some task handler returns. */
 	volatile uint32_t i = 0;
@@ -47,7 +47,7 @@ marios_task_id_t marios_task_init(void (*handler)(void), uint32_t stack_size)
 	   minus 16 words (64 bytes) to leave space for storing 16 registers: */
 	marios_task_t *p_task = &m_task_table.tasks[m_task_table.size];
 	p_task->handler = handler;
-	marios_stack_t *p_stack = (marios_stack_t*) malloc(128*sizeof(marios_stack_t));
+	marios_stack_t *p_stack = (marios_stack_t*) malloc(stack_size*sizeof(marios_stack_t));
 	p_task->sp = (uint32_t)(p_stack+stack_size-16);
 	p_task->status = MARIOS_TASK_STATUS_READY;
 	p_task->wait_ticks = 0;
@@ -58,23 +58,16 @@ marios_task_id_t marios_task_init(void (*handler)(void), uint32_t stack_size)
 	   - LR: Point to a function to be called when the handler returns */
 	p_stack[stack_size-1] = 0x01000000;
 	p_stack[stack_size-2] = (uint32_t)handler;
-	p_stack[stack_size-3] = (uint32_t) &task_finished;
+	p_stack[stack_size-3] = (uint32_t) &task_completion;
 
 	m_task_table.size++;
 
 	return (m_task_table.size-1);
 }
 
-//This function relies on the Core CM4 of ARM (core_cm4.h)
 int marios_start(uint32_t systick_ticks)
 {
-	NVIC_SetPriority(PendSV_IRQn, 0xff); /* Lowest possible priority */
-	NVIC_SetPriority(SysTick_IRQn, 0x00); /* Highest possible priority */
-
-	/* Start the SysTick timer: */
-	uint32_t ret_val = SysTick_Config(systick_ticks);
-	if (ret_val != 0)
-		return -1;
+	configureSystick(systick_ticks);
 
 	/* Start the first task: should be the first non-idle */
 	marios_curr_task = &m_task_table.tasks[m_task_table.current_task];
@@ -106,9 +99,7 @@ void marios_task_yield(void)
 	marios_next_task->timer = mariosTicks;
 	if(marios_next_task != marios_curr_task)
 	{
-		SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
-		__DSB(); //__asm volatile( "dsb" );
-		__ISB(); //__asm volatile( "isb" );
+		yield(); //Actually, we are triggering the activation of the PendSV_Handler
 	}
 }
 
@@ -138,14 +129,20 @@ void marios_scheduler(void)
 }
 
 void marios_delay(uint32_t ticks){
-	enterCriticalRegion(); //Here the yield and scheduling must be protected against other incoming interrupts
-	m_task_table.tasks[m_task_table.current_task].status = MARIOS_TASK_STATUS_WAIT;
-	m_task_table.tasks[m_task_table.current_task].wait_ticks = mariosTicks+ticks;
-	marios_task_yield();
-	exitCriticalRegion();
+	if(0 != ticks)
+	{
+		enterCriticalRegion(); //Here the yield and scheduling must be protected against other incoming interrupts
+		{
+			m_task_table.tasks[m_task_table.current_task].status = MARIOS_TASK_STATUS_WAIT;
+			m_task_table.tasks[m_task_table.current_task].wait_ticks = mariosTicks+ticks;
+			marios_task_yield();
+		}
+		exitCriticalRegion();
+	}
 }
 
-unsigned int get_current_task_id(void){
+unsigned int get_current_task_id(void)
+{
 	return m_task_table.current_task;
 }
 

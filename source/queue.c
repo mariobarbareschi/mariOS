@@ -24,7 +24,7 @@ unsigned int freeSpace(marios_queue* queue)
 	return queue->freeMemory;
 }
 
-void enqueue(marios_queue* queue, int8_t* msg, unsigned int msg_size)
+marios_queue_op_status_t enqueue(marios_queue* queue, int8_t* msg, unsigned int msg_size, marios_blocking_queue_op_t blocking)
 {
 	int writtenFlag = 0;
 	while(0 == writtenFlag) //This flag will be set once the writing is achieved
@@ -36,9 +36,18 @@ void enqueue(marios_queue* queue, int8_t* msg, unsigned int msg_size)
 				queue->wLock = MARIOS_QUEUE_LOCKED;
 				if(msg_size > queue->freeMemory) //Check available space and yield if no enough space
 				{
-					queue->tasks_waiting_to_send[get_current_task_id()] = 1;
-					set_current_task_status(MARIOS_TASK_STATUS_SUSPEND);
-					marios_task_yield();
+					if(MARIOS_BLOCKING_QUEUE_OP == blocking)
+					{
+						queue->tasks_waiting_to_send[get_current_task_id()] = 1;
+						set_current_task_status(MARIOS_TASK_STATUS_SUSPEND);
+						marios_task_yield();
+					}
+					else
+					{
+						queue->wLock = MARIOS_QUEUE_UNLOCKED;
+						exitCriticalRegion();
+						return MARIOS_QUEUE_FULL_OP;
+					}
 				}
 				else //Space available
 				{
@@ -68,62 +77,89 @@ void enqueue(marios_queue* queue, int8_t* msg, unsigned int msg_size)
 			}
 			else //The queue is just locked for sending
 			{
-				marios_task_yield();
+				if(MARIOS_BLOCKING_QUEUE_OP == blocking)
+				{
+					marios_task_yield();
+				}
+				else
+				{
+					exitCriticalRegion();
+					return MARIOS_QUEUE_BUSY_OP;
+				}
 			}
 		}
 		exitCriticalRegion();
 	}
+	return MARIOS_QUEUE_SUCCESS_OP;
 }
 
-void dequeue(marios_queue* queue, int8_t* msg, unsigned int msg_size)
+marios_queue_op_status_t dequeue(marios_queue* queue, int8_t* msg, unsigned int msg_size, marios_blocking_queue_op_t blocking)
 {
 	int receivedFlag = 0;
-		while(0 == receivedFlag) //This flag will be set once the writing is achieved
+	while(0 == receivedFlag) //This flag will be set once the writing is achieved
+	{
+		enterCriticalRegion();
 		{
-			enterCriticalRegion();
+			if(MARIOS_QUEUE_UNLOCKED == queue->rLock)
 			{
-				if(MARIOS_QUEUE_UNLOCKED == queue->rLock)
+				queue->rLock = MARIOS_QUEUE_LOCKED;
+				if(msg_size > (queue->size - queue->freeMemory)) //Check whether the queue is containing at least one msg
 				{
-					queue->rLock = MARIOS_QUEUE_LOCKED;
-					if(msg_size > (queue->size - queue->freeMemory)) //Check whether Is the queue containing at least one msg
+					if(MARIOS_BLOCKING_QUEUE_OP == blocking)
 					{
 						queue->tasks_waiting_to_receive[get_current_task_id()] = 1;
 						set_current_task_status(MARIOS_TASK_STATUS_SUSPEND);
 						marios_task_yield();
 					}
-					else //There is at least one msg
+					else
 					{
-						if(queue->tail+msg_size <= queue->size) //If the message is stored along the queue
-						{
-							memcpy(msg, queue->queueMemory+queue->tail,msg_size);
-							queue->tail += msg_size;
-						}
-						else //We need to split the copy
-						{
-							memcpy(msg, queue->queueMemory+queue->tail, queue->size-queue->tail);
-							memcpy(msg+queue->size-queue->tail, queue->queueMemory, msg_size-(queue->size-queue->tail));
-							queue->tail = msg_size-(queue->size-queue->tail); //The tail just point to the next non-free region
-						}
-						queue->freeMemory += msg_size;
-						//Let's make awaken suspended tasks
-						int i;
-						for(i = 0; i < MARIOS_CONFIG_MAX_TASKS; i++)
-							if(1 == queue->tasks_waiting_to_send[i])
-							{
-								set_task_status(i, MARIOS_TASK_STATUS_READY);
-								queue->tasks_waiting_to_send[i] = 0;
-							}
-						receivedFlag = 1;
+						queue->wLock = MARIOS_QUEUE_UNLOCKED;
+						exitCriticalRegion();
+						return MARIOS_QUEUE_EMPTY_OP;
 					}
-					queue->rLock = MARIOS_QUEUE_UNLOCKED;
 				}
-				else //The queue is just locked for receiving
+				else //There is at least one msg
+				{
+					if(queue->tail+msg_size <= queue->size) //If the message is stored along the queue
+					{
+						memcpy(msg, queue->queueMemory+queue->tail,msg_size);
+						queue->tail += msg_size;
+					}
+					else //We need to split the copy
+					{
+						memcpy(msg, queue->queueMemory+queue->tail, queue->size-queue->tail);
+						memcpy(msg+queue->size-queue->tail, queue->queueMemory, msg_size-(queue->size-queue->tail));
+						queue->tail = msg_size-(queue->size-queue->tail); //The tail just point to the next non-free region
+					}
+					queue->freeMemory += msg_size;
+					//Let's make awaken suspended tasks
+					int i;
+					for(i = 0; i < MARIOS_CONFIG_MAX_TASKS; i++)
+						if(1 == queue->tasks_waiting_to_send[i])
+						{
+							set_task_status(i, MARIOS_TASK_STATUS_READY);
+							queue->tasks_waiting_to_send[i] = 0;
+						}
+					receivedFlag = 1;
+				}
+				queue->rLock = MARIOS_QUEUE_UNLOCKED;
+			}
+			else //The queue is just locked for receiving
+			{
+				if(MARIOS_BLOCKING_QUEUE_OP == blocking)
 				{
 					marios_task_yield();
 				}
+				else
+				{
+					exitCriticalRegion();
+					return MARIOS_QUEUE_BUSY_OP;
+				}
 			}
-			exitCriticalRegion();
 		}
+		exitCriticalRegion();
+	}
+	return MARIOS_QUEUE_SUCCESS_OP;
 }
 
 void resetQueue(marios_queue* queue)

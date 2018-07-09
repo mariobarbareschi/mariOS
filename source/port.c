@@ -11,16 +11,16 @@
 
 void loadFirstTask(){
 	__asm volatile(	//" ldr r0,=_estack 		\n" //Take the original master stack pointer from the system startup
-					" ldr R0,=0xE000ED08 	\n" //Set R0 to VTOR address
-					" ldr r0, [r0] 			\n" //Load VTOR
-					" ldr r0, [r0] 			\n" //Load initial MSP value
-					" msr msp, r0			\n" // Set the msp back to the start of the stack
-					" cpsie i				\n" //enable interrupt for getting the SWI 0
-					" dsb					\n" //No instruction in program order after this instruction executes until this instruction completes
-					" isb					\n" //It ensures that the effects of context altering operations, such as changing the ASID, or completed TLB maintenance operations, or branch predictor maintenance operations
-					" svc 0					\n" // we invoke a SWI to start first task. */
-					" nop					\n"
-					" .align 2				\n"
+			" ldr R0,=0xE000ED08 	\n" //Set R0 to VTOR address
+			" ldr r0, [r0] 			\n" //Load VTOR
+			" ldr r0, [r0] 			\n" //Load initial MSP value
+			" msr msp, r0			\n" // Set the msp back to the start of the stack
+			" cpsie i				\n" //enable interrupt for getting the SWI 0
+			" dsb					\n" //No instruction in program order after this instruction executes until this instruction completes
+			" isb					\n" //It ensures that the effects of context altering operations, such as changing the ASID, or completed TLB maintenance operations, or branch predictor maintenance operations
+			" svc 0					\n" // we invoke a SWI to start first task. */
+			" nop					\n"
+			" .align 2				\n"
 
 	);
 
@@ -28,18 +28,18 @@ void loadFirstTask(){
 
 void SVC_Handler(){
 	__asm volatile(
-				" ldr	r2,=marios_curr_task 		\n"
-				" ldr r1, [r2]						\n"
-				" ldr r0, [r1] 						\n"//Get the stack pointer of the task
-				" ldmia r0!, {r4-r11}				\n" // Pop registers that will be not automatically loaded on exception entry
-				" msr psp, r0						\n"
-				" mov r0, #0						\n" //Set 0 to basepri
-				" msr	basepri, r0					\n"
-				//Note that remaining registers are going to be automatically restored by returning from the ISR
-				/* EXC_RETURN - Thread mode with PSP: */
-				" orr r14, #0xd						\n"
-				" bx r14							\n"
-				" .align 2							\n"
+			" ldr	r2,=marios_curr_task 		\n"
+			" ldr r1, [r2]						\n"
+			" ldr r0, [r1] 						\n"//Get the stack pointer of the task
+			" ldmia r0!, {r4-r11}				\n" // Pop registers that will be not automatically loaded on exception entry
+			" msr psp, r0						\n"
+			" mov r0, #0						\n" //Set 0 to basepri
+			" msr	basepri, r0					\n"
+			//Note that remaining registers are going to be automatically restored by returning from the ISR
+			/* EXC_RETURN - Thread mode with PSP: */
+			" orr r14, #0xd						\n"
+			" bx r14							\n"
+			" .align 2							\n"
 
 	);
 }
@@ -63,7 +63,7 @@ __attribute__(( naked )) void PendSV_Handler(){
 			|      | <- SP before interrupt (orig. SP)
 			+------+
 
-			*/
+			 */
 
 			" mrs		r0, psp 			\n" //Get the current stack pointer
 			" dsb							\n"
@@ -90,7 +90,7 @@ __attribute__(( naked )) void PendSV_Handler(){
 			| xPSR |
 			|      | <- SP before interrupt (orig. SP)
 			+------+
-			*/
+			 */
 			/* Save current task's SP: */
 			" ldr	r2, =marios_curr_task 	\n"
 			" ldr	r1, [r2] 				\n"
@@ -115,8 +115,15 @@ __attribute__(( naked )) void PendSV_Handler(){
 			"isb							\n"
 			" bx	r14 					\n"
 			" .align 2						\n"
-		);
-	}
+	);
+}
+
+
+void yield(){
+	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+	__DSB(); //__asm volatile( "dsb" );
+	__ISB(); //__asm volatile( "isb" );
+}
 
 void enterCriticalRegion()
 {
@@ -125,4 +132,11 @@ void enterCriticalRegion()
 void exitCriticalRegion()
 {
 	__enable_irq();
+}
+
+int configureSystick(uint32_t systick_ticks)
+{
+	uint32_t ret_val = SysTick_Config(SystemCoreClock/systick_ticks);
+	if (ret_val != 0)
+		return -1;
 }

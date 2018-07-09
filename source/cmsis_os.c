@@ -6,7 +6,7 @@ osStatus osKernelInitialize (void){
 
 osStatus osKernelStart (void)
 {
-  marios_start(SystemCoreClock/MARIOS_CONFIG_SYSTICK_DIV);
+  marios_start(MARIOS_CONFIG_SYSTICK_DIV);
   return osOK;
 }
 
