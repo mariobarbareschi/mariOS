@@ -1,28 +1,50 @@
 #include "mariOS.h"
 
 
+/**
+ * Here we define a list containing all tasks that the scheduler must handle.
+ * Additionally, the table reports the number of created tasks and the current
+ * active task (there is one and only one active task at time)
+ */
 static struct
 {
-	marios_task_t tasks[MARIOS_CONFIG_MAX_TASKS];
-	volatile uint32_t current_task;
-	uint16_t size;
-} m_task_table;
+	mariOS_task_control_block_t tasks[MARIOS_CONFIG_MAX_TASKS];
+	volatile mariOS_task_id_t current_active_task; /** The current executing task */
+	uint16_t size; /** Number of tasks that have been created */
+} mariOS_tasks_list;
 
-marios_task_t* volatile marios_curr_task;
-marios_task_t* volatile marios_next_task;
+/**
+ * This variable handles the mariOS ticks from the RTOS boot.
+ */
+volatile uint32_t mariOS_ticks;
 
+/**
+ * These two variables are used to get trace of current executing task
+ * and one that has just been scheduled as next one. Once the yield
+ * accomplishes, these variables are equal to each other.
+ */
+mariOS_task_control_block_t* volatile marios_curr_task;
+mariOS_task_control_block_t* volatile marios_next_task;
 
-static void mariOSidle()
+/**
+ * mariOS_idle is the system idle task. It should be modified accordingly to
+ * the system's needs.
+ */
+static void mariOS_idle()
 {
 	volatile uint64_t idleCount = 0;
 	while (1){
 		idleCount++;
 		__disable_irq(); //Here the yield must be protected against other incoming interrupts
-		marios_task_yield();
+		mariOS_task_yield();
 		__enable_irq();
 	}
 }
 
+/**
+ * The task_completion acts like a trap for those tasks that completes their
+ * job. It should be modified accordingly to the system's needs.
+ */
 static void task_completion(void)
 {
 	/* This function is called when some task handler returns. */
@@ -31,22 +53,24 @@ static void task_completion(void)
 		i++;
 }
 
-void marios_init(void)
+void mariOS_init(void)
 {
-	memset(&m_task_table, 0, sizeof(m_task_table));
-	mariosTicks = 0;
-	marios_task_init(mariOSidle, 40);
+	memset(&mariOS_tasks_list, 0, sizeof(mariOS_tasks_list));
+	mariOS_ticks = 0;
+	mariOS_task_init(mariOS_idle, MARIOS_IDLE_TASK_STACK); /** the current idle process implementation does not need a lot of space */
 }
 
-marios_task_id_t marios_task_init(void (*handler)(void), uint32_t stack_size)
+mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size)
 {
-	if (m_task_table.size >= MARIOS_CONFIG_MAX_TASKS-1)
+	if (mariOS_tasks_list.size >= MARIOS_CONFIG_MAX_TASKS-1)
 		return -1;
 
 	/* Initialize the task structure and set SP to the top of the stack
 	   minus 16 words (64 bytes) to leave space for storing 16 registers: */
-	marios_task_t *p_task = &m_task_table.tasks[m_task_table.size];
+	mariOS_task_control_block_t *p_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.size];
 	p_task->handler = handler;
+	if(MARIOS_MINIMUM_TASK_STACK_SIZE >= stack_size)
+		stack_size = MARIOS_MINIMUM_TASK_STACK_SIZE;
 	marios_stack_t *p_stack = (marios_stack_t*) malloc(stack_size*sizeof(marios_stack_t));
 	p_task->sp = (uint32_t)(p_stack+stack_size-16);
 	p_task->status = MARIOS_TASK_STATUS_READY;
@@ -60,17 +84,17 @@ marios_task_id_t marios_task_init(void (*handler)(void), uint32_t stack_size)
 	p_stack[stack_size-2] = (uint32_t)handler;
 	p_stack[stack_size-3] = (uint32_t) &task_completion;
 
-	m_task_table.size++;
+	mariOS_tasks_list.size++;
 
-	return (m_task_table.size-1);
+	return (mariOS_tasks_list.size-1);
 }
 
-int marios_start(uint32_t systick_ticks)
+int mariOS_start(uint32_t systick_ticks)
 {
 	configureSystick(systick_ticks);
 
 	/* Start the first task: should be the first non-idle */
-	marios_curr_task = &m_task_table.tasks[m_task_table.current_task];
+	marios_curr_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task];
 
 	loadFirstTask();
 	//This point should be never reached
@@ -79,33 +103,33 @@ int marios_start(uint32_t systick_ticks)
 
 void marios_systick_handler(void)
 {
-	++mariosTicks;
+	++mariOS_ticks;
 
 	int i;
-	for(i = 1; i < m_task_table.size; i++) //loop over tasks except for idle one
+	for(i = 1; i < mariOS_tasks_list.size; i++) //loop over tasks except for idle one
 	{	//Remove tasks from suspend state if "wait_ticks" elapses
 		//Does not matter mariosTicks overflow, since we are checking the equality
-		if(MARIOS_TASK_STATUS_WAIT == m_task_table.tasks[i].status && m_task_table.tasks[i].wait_ticks == mariosTicks){
-			m_task_table.tasks[i].status = MARIOS_TASK_STATUS_READY;
-			m_task_table.tasks[i].wait_ticks = 0;
+		if(MARIOS_TASK_STATUS_WAIT == mariOS_tasks_list.tasks[i].status && mariOS_tasks_list.tasks[i].wait_ticks == mariOS_ticks){
+			mariOS_tasks_list.tasks[i].status = MARIOS_TASK_STATUS_READY;
+			mariOS_tasks_list.tasks[i].wait_ticks = 0;
 		}
 	}
-	marios_task_yield();
+	mariOS_task_yield();
 }
 
-void marios_task_yield(void)
+void mariOS_task_yield(void)
 {
-	marios_scheduler();
-	marios_next_task->timer = mariosTicks;
+	mariOS_scheduler();
+	marios_next_task->last_active_time = mariOS_ticks;
 	if(marios_next_task != marios_curr_task)
 	{
 		yield(); //Actually, we are triggering the activation of the PendSV_Handler
 	}
 }
 
-void marios_scheduler(void)
+void mariOS_scheduler(void)
 {
-	marios_curr_task = &m_task_table.tasks[m_task_table.current_task];
+	marios_curr_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task];
 
 	if(MARIOS_TASK_STATUS_ACTIVE == marios_curr_task->status)
 		marios_curr_task->status = MARIOS_TASK_STATUS_READY;
@@ -114,54 +138,54 @@ void marios_scheduler(void)
 	int i = 0;
 	do{
 		++i;
-		m_task_table.current_task++;
-		if (m_task_table.current_task >= m_task_table.size)
-			m_task_table.current_task = 1; //let's skip idle
+		mariOS_tasks_list.current_active_task++;
+		if (mariOS_tasks_list.current_active_task >= mariOS_tasks_list.size)
+			mariOS_tasks_list.current_active_task = 1; //let's skip idle
 
-	} while(i < m_task_table.size && MARIOS_TASK_STATUS_READY != m_task_table.tasks[m_task_table.current_task].status);
-	if( i == m_task_table.size ) //if we cycled over the task table, the only suitable task is the idle
+	} while(i < mariOS_tasks_list.size && MARIOS_TASK_STATUS_READY != mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task].status);
+	if( i == mariOS_tasks_list.size ) //if we cycled over the task table, the only suitable task is the idle
 	{
-		m_task_table.current_task = 0;
+		mariOS_tasks_list.current_active_task = 0;
 	}
 
-	marios_next_task = &m_task_table.tasks[m_task_table.current_task];
+	marios_next_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task];
 	marios_next_task->status = MARIOS_TASK_STATUS_ACTIVE;
 }
 
-void marios_delay(uint32_t ticks){
+void mariOS_delay(uint32_t ticks){
 	if(0 != ticks)
 	{
 		enterCriticalRegion(); //Here the yield and scheduling must be protected against other incoming interrupts
 		{
-			m_task_table.tasks[m_task_table.current_task].status = MARIOS_TASK_STATUS_WAIT;
-			m_task_table.tasks[m_task_table.current_task].wait_ticks = mariosTicks+ticks;
-			marios_task_yield();
+			mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task].status = MARIOS_TASK_STATUS_WAIT;
+			mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task].wait_ticks = mariOS_ticks+ticks;
+			mariOS_task_yield();
 		}
 		exitCriticalRegion();
 	}
 }
 
-unsigned int get_current_task_id(void)
+mariOS_task_id_t get_current_task_id(void)
 {
-	return m_task_table.current_task;
+	return mariOS_tasks_list.current_active_task;
 }
 
-void set_current_task_status(marios_task_status_t status)
+void set_current_task_status(mariOS_task_status_t status)
 {
-	set_task_status(m_task_table.current_task, status);
+	set_task_status(mariOS_tasks_list.current_active_task, status);
 }
 
-void set_task_status(unsigned int task_id, marios_task_status_t status)
+void set_task_status(mariOS_task_id_t task_id, mariOS_task_status_t status)
 {
-	m_task_table.tasks[task_id].status = status;
+	mariOS_tasks_list.tasks[task_id].status = status;
 }
 
-marios_task_status_t get_task_status(unsigned int task_id)
+mariOS_task_status_t get_task_status(mariOS_task_id_t task_id)
 {
-	return m_task_table.tasks[task_id].status;
+	return mariOS_tasks_list.tasks[task_id].status;
 }
 
-marios_task_status_t get_current_task_status(void)
+mariOS_task_status_t get_current_task_status(void)
 {
-	return get_task_status(m_task_table.current_task);
+	return get_task_status(mariOS_tasks_list.current_active_task);
 }

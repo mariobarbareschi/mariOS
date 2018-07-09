@@ -40,7 +40,7 @@ marios_queue_op_status_t enqueue(marios_queue* queue, int8_t* msg, unsigned int 
 					{
 						queue->tasks_waiting_to_send[get_current_task_id()] = 1;
 						set_current_task_status(MARIOS_TASK_STATUS_SUSPEND);
-						marios_task_yield();
+						mariOS_task_yield();
 					}
 					else
 					{
@@ -79,7 +79,7 @@ marios_queue_op_status_t enqueue(marios_queue* queue, int8_t* msg, unsigned int 
 			{
 				if(MARIOS_BLOCKING_QUEUE_OP == blocking)
 				{
-					marios_task_yield();
+					mariOS_task_yield();
 				}
 				else
 				{
@@ -109,7 +109,7 @@ marios_queue_op_status_t dequeue(marios_queue* queue, int8_t* msg, unsigned int 
 					{
 						queue->tasks_waiting_to_receive[get_current_task_id()] = 1;
 						set_current_task_status(MARIOS_TASK_STATUS_SUSPEND);
-						marios_task_yield();
+						mariOS_task_yield();
 					}
 					else
 					{
@@ -148,7 +148,7 @@ marios_queue_op_status_t dequeue(marios_queue* queue, int8_t* msg, unsigned int 
 			{
 				if(MARIOS_BLOCKING_QUEUE_OP == blocking)
 				{
-					marios_task_yield();
+					mariOS_task_yield();
 				}
 				else
 				{

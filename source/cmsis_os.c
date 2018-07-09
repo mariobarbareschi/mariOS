@@ -1,12 +1,12 @@
 #include "cmsis_os.h"
 
 osStatus osKernelInitialize (void){
-	marios_init();
+	mariOS_init();
 }
 
 osStatus osKernelStart (void)
 {
-  marios_start(MARIOS_CONFIG_SYSTICK_DIV);
+  mariOS_start(MARIOS_CONFIG_SYSTICK_DIV);
   return osOK;
 }
 
@@ -17,7 +17,7 @@ uint32_t osKernelSysTick(void)
 
 osThreadId osThreadCreate (const osThreadDef_t *thread_def, void *argument)
 {
-	return marios_task_init(thread_def->pthread, thread_def->stacksize);
+	return mariOS_task_init(thread_def->pthread, thread_def->stacksize);
   
 }
 
@@ -33,7 +33,7 @@ osStatus osThreadTerminate (osThreadId thread_id)
 
 osStatus osThreadYield (void)
 {
-	marios_task_yield();
+	mariOS_task_yield();
   return osOK;
 }
 
@@ -50,7 +50,7 @@ osPriority osThreadGetPriority (osThreadId thread_id)
 
 osStatus osDelay (uint32_t millisec)
 {
-	marios_delay(MARIOS_CONFIG_SYSTICK_DIV/1000*millisec);
+	mariOS_delay(MARIOS_CONFIG_SYSTICK_DIV/1000*millisec);
 	return osOK;
 }
 
