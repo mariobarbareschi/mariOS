@@ -14,6 +14,9 @@ The project implements a very easy and tiny core that supports:
 Actually, it supports exclusively the ARM Cortex M3/M4 through the definition of two interrupt handlers and some other helpful machine-dependent functions.
 Take the project as it is: easy to comprehend, small, ready-for-compiling over a STM32 toolchain (even though easily portable over others toolchains), ready for future extensions.
 
+## Documentation
+A draft of documentation is available from internal code documentation by doxygen.
+For your comodity, check it out the documentation here: https://mariobarbareschi.github.io/mariOS/.
 ---------
 
 ### LICENSE
@@ -23,3 +26,4 @@ Take the project as it is: easy to comprehend, small, ready-for-compiling over a
 Github is for social coding.
 If you want to write code, I encourage contributions through pull requests from forks of this repository.
 
+[https://mariobarbareschi.github.io/mariOS/]
