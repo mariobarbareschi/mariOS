@@ -76,8 +76,8 @@ void mariOS_init(void);
  * Status of each created task is set to MARIOS_TASK_STATUS_READY, meant that
  * the scheduler may pick it to be the current executed task, setting it to the
  * status MARIOS_TASK_STATUS_ACTIVE.
- * \param handler is the function pointer
- * \param stack_size decides the size of the task's stack
+ * \param [in] handler is the function pointer
+ * \param stack_size [in] decides the size of the task's stack
  *
  */
 mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size);
@@ -89,7 +89,7 @@ mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size);
  * Depending on the system target, some other
  * configurations must be provided, especially those related to the interrupt
  * controller, interrupt priority and additional driver configuration.
- * \param systick_ticks is the number of last_active_time's ticks between two interruption
+ * \param [in] systick_ticks is the number of last_active_time's ticks between two interruption
  * events
  */
 int mariOS_start(uint32_t systick_ticks);
@@ -136,7 +136,7 @@ void mariOS_task_yield(void);
  * MARIOS_TASK_STATUS_WAIT completed, the function calls mariOS_task_yield to
  * call the scheduler and perform a context switch.
  *
- * \param ticks represents the mariOS ticks that the scheduler must wait before
+ * \param [in] ticks represents the mariOS ticks that the scheduler must wait before
  * taking into account the task when it is called.
  */
 void mariOS_delay(uint32_t ticks);
@@ -161,15 +161,15 @@ mariOS_task_id_t get_current_task_id(void);
 /**
  * This accessory function configure the status of the current active task
  *
- * \param status is the new status of current active task
+ * \param [in] status is the new status of current active task
  */
 void set_current_task_status(mariOS_task_status_t status);
 
 /**
  * This accessory function configure the status of the a task
  *
- * \param task_id is the id of the task to modify
- * \param status is the new status of current active task
+ * \param [in] task_id is the id of the task to modify
+ * \param [in] status is the new status of current active task
  */
 void set_task_status(mariOS_task_id_t task_id, mariOS_task_status_t status);
 
@@ -188,7 +188,7 @@ mariOS_task_status_t get_current_task_status(void);
 /**
  * This accessory function returns the status of a given task
  *
- * \param task_id is the ID of the task
+ * \param [in] task_id is the ID of the task
  *
  * \return mariOS_task_status of the task_id task
  *

@@ -111,10 +111,10 @@ mariOS_queue* createQueue(unsigned int size);
  * Conversely, if the enqueue succeeds, no matter if blocking or not,
  * the function returns MARIOS_QUEUE_SUCCESS_OP.
  *
- * \param queue is the mariOS_queue handler
- * \param msg is the pointer to the message that has to be enqueued
- * \param size is the message size (in bytes)
- * \param blocking specifies if the enqueue is blocking or not
+ * \param [in] queue is the mariOS_queue handler
+ * \param [in] msg is the pointer to the message that has to be enqueued
+ * \param [in] size is the message size (in bytes)
+ * \param [in] blocking specifies if the enqueue is blocking or not
  * \return the operation success or failure
  */
 mariOS_queue_op_status_t enqueue(mariOS_queue* queue, int8_t* msg, unsigned int size, mariOS_blocking_queue_op_t blocking);
@@ -146,10 +146,10 @@ mariOS_queue_op_status_t enqueue(mariOS_queue* queue, int8_t* msg, unsigned int 
  * Conversely, if the dequeue succeeds, no matter if blocking or not,
  * the function returns MARIOS_QUEUE_SUCCESS_OP.
  *
- * \param queue is the mariOS_queue handler
- * \param msg is the pointer on which the message will be stored
- * \param size is the message size (in bytes)
- * \param blocking specifies if the dequeue is blocking or not
+ * \param [in] queue is the mariOS_queue handler
+ * \param [out] msg is the pointer on which the message will be stored
+ * \param [in] size is the message size (in bytes)
+ * \param [in] blocking specifies if the dequeue is blocking or not
  * \return the operation success or failure
  */
 mariOS_queue_op_status_t dequeue(mariOS_queue* queue, int8_t* msg, unsigned int size, mariOS_blocking_queue_op_t blocking);
