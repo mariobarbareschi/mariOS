@@ -16,7 +16,7 @@ Take the project as it is: easy to comprehend, small, ready-for-compiling over a
 
 ## Documentation
 A draft of documentation is available from internal code documentation by doxygen.
-For your comodity, check it out the documentation here: https://mariobarbareschi.github.io/mariOS/.
+For your comodity, check it out the docs folder: https://mariobarbareschi.github.io/mariOS/docs/html.
 ---------
 
 ### LICENSE
