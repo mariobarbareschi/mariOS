@@ -29,7 +29,7 @@ marios_queue_op_status_t enqueue(marios_queue* queue, int8_t* msg, unsigned int 
 	int writtenFlag = 0;
 	while(0 == writtenFlag) //This flag will be set once the writing is achieved
 	{
-		enterCriticalRegion();
+		enter_critical_section();
 		{
 			if(MARIOS_QUEUE_UNLOCKED == queue->wLock)
 			{
@@ -45,7 +45,7 @@ marios_queue_op_status_t enqueue(marios_queue* queue, int8_t* msg, unsigned int 
 					else
 					{
 						queue->wLock = MARIOS_QUEUE_UNLOCKED;
-						exitCriticalRegion();
+						exit_critical_sction();
 						return MARIOS_QUEUE_FULL_OP;
 					}
 				}
@@ -83,12 +83,12 @@ marios_queue_op_status_t enqueue(marios_queue* queue, int8_t* msg, unsigned int 
 				}
 				else
 				{
-					exitCriticalRegion();
+					exit_critical_sction();
 					return MARIOS_QUEUE_BUSY_OP;
 				}
 			}
 		}
-		exitCriticalRegion();
+		exit_critical_sction();
 	}
 	return MARIOS_QUEUE_SUCCESS_OP;
 }
@@ -98,7 +98,7 @@ marios_queue_op_status_t dequeue(marios_queue* queue, int8_t* msg, unsigned int 
 	int receivedFlag = 0;
 	while(0 == receivedFlag) //This flag will be set once the writing is achieved
 	{
-		enterCriticalRegion();
+		enter_critical_section();
 		{
 			if(MARIOS_QUEUE_UNLOCKED == queue->rLock)
 			{
@@ -114,7 +114,7 @@ marios_queue_op_status_t dequeue(marios_queue* queue, int8_t* msg, unsigned int 
 					else
 					{
 						queue->wLock = MARIOS_QUEUE_UNLOCKED;
-						exitCriticalRegion();
+						exit_critical_sction();
 						return MARIOS_QUEUE_EMPTY_OP;
 					}
 				}
@@ -152,12 +152,12 @@ marios_queue_op_status_t dequeue(marios_queue* queue, int8_t* msg, unsigned int 
 				}
 				else
 				{
-					exitCriticalRegion();
+					exit_critical_sction();
 					return MARIOS_QUEUE_BUSY_OP;
 				}
 			}
 		}
-		exitCriticalRegion();
+		exit_critical_sction();
 	}
 	return MARIOS_QUEUE_SUCCESS_OP;
 }

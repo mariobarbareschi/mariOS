@@ -112,7 +112,7 @@ __attribute__(( naked )) void PendSV_Handler(){
 			/* Enable interrupts: */
 			" cpsie	i	 					\n"
 			" dsb							\n"
-			"isb							\n"
+			" isb							\n"
 			" bx	r14 					\n"
 			" .align 2						\n"
 	);
@@ -125,11 +125,11 @@ void yield(){
 	__ISB(); //__asm volatile( "isb" );
 }
 
-void enterCriticalRegion()
+void enter_critical_section()
 {
 	__disable_irq();
 }
-void exitCriticalRegion()
+void exit_critical_sction()
 {
 	__enable_irq();
 }

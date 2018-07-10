@@ -86,7 +86,7 @@ mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size)
 
 	mariOS_tasks_list.size++;
 
-	return (mariOS_tasks_list.size-1);
+	return (mariOS_tasks_list.size-1); /** The taskID of tasks starts from 0, while mariOS_idle does not have any ID, even though its index is 0 */
 }
 
 int mariOS_start(uint32_t systick_ticks)
@@ -123,18 +123,14 @@ void mariOS_task_yield(void)
 	marios_next_task->last_active_time = mariOS_ticks;
 	if(marios_next_task != marios_curr_task)
 	{
-		yield(); //Actually, we are triggering the activation of the PendSV_Handler
+		yield(); /** Actually, we are triggering the activation of the PendSV_Handler */
 	}
 }
 
-void mariOS_scheduler(void)
-{
-	marios_curr_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task];
-
-	if(MARIOS_TASK_STATUS_ACTIVE == marios_curr_task->status)
-		marios_curr_task->status = MARIOS_TASK_STATUS_READY;
-
-	/* Select next task: */
+/** mariOS scheduler makes use of this function for picking a task. If another algorithm
+ * has to be executed, a different function must be provided and called
+ */
+void round_robin_scheduler(){
 	int i = 0;
 	do{
 		++i;
@@ -147,6 +143,19 @@ void mariOS_scheduler(void)
 	{
 		mariOS_tasks_list.current_active_task = 0;
 	}
+}
+
+void mariOS_scheduler(void)
+{
+	/** Retrieve the current active task*/
+	marios_curr_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task];
+
+	/** If it is active, namely it has been set neither in wait nor suspend, its status must be changed in ready */
+	if(MARIOS_TASK_STATUS_ACTIVE == marios_curr_task->status)
+		marios_curr_task->status = MARIOS_TASK_STATUS_READY;
+
+	/** Now, we need to pick the next task: */
+	round_robin_scheduler();
 
 	marios_next_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task];
 	marios_next_task->status = MARIOS_TASK_STATUS_ACTIVE;
@@ -155,13 +164,13 @@ void mariOS_scheduler(void)
 void mariOS_delay(uint32_t ticks){
 	if(0 != ticks)
 	{
-		enterCriticalRegion(); //Here the yield and scheduling must be protected against other incoming interrupts
+		enter_critical_section(); //Here the yield and scheduling must be protected against other incoming interrupts
 		{
 			mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task].status = MARIOS_TASK_STATUS_WAIT;
 			mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task].wait_ticks = mariOS_ticks+ticks;
 			mariOS_task_yield();
 		}
-		exitCriticalRegion();
+		exit_critical_sction();
 	}
 }
 
