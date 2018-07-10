@@ -6,25 +6,19 @@
  */
 
 #include "queue.h"
-#include "mariOS.h"
 
-marios_queue* createQueue(unsigned int size)
+mariOS_queue* createQueue(unsigned int size)
 {
-	marios_queue* queue = (marios_queue*) malloc(sizeof(marios_queue));
+	mariOS_queue* queue = (mariOS_queue*) malloc(sizeof(mariOS_queue));
 	queue->size = size;
-	queue->queueMemory = (uint8_t*) malloc(size);
+	queue->queueMemory = malloc(size);
 	queue->rLock = MARIOS_QUEUE_UNLOCKED;
 	queue->wLock = MARIOS_QUEUE_UNLOCKED;
-	resetQueue(queue);
+	reset_queue(queue);
 	return queue;
 }
 
-unsigned int freeSpace(marios_queue* queue)
-{
-	return queue->freeMemory;
-}
-
-marios_queue_op_status_t enqueue(marios_queue* queue, int8_t* msg, unsigned int msg_size, marios_blocking_queue_op_t blocking)
+mariOS_queue_op_status_t enqueue(mariOS_queue* queue, int8_t* msg, unsigned int msg_size, mariOS_blocking_queue_op_t blocking)
 {
 	int writtenFlag = 0;
 	while(0 == writtenFlag) //This flag will be set once the writing is achieved
@@ -40,7 +34,9 @@ marios_queue_op_status_t enqueue(marios_queue* queue, int8_t* msg, unsigned int 
 					{
 						queue->tasks_waiting_to_send[get_current_task_id()] = 1;
 						set_current_task_status(MARIOS_TASK_STATUS_SUSPEND);
-						mariOS_task_yield();
+						mariOS_task_yield(); /** the yield call has no effect since it is invoked inside a critical section!
+						 	 	 	 	 	  *	It will eventually have effect once the critical section ends.
+						 	 	 	 	 	  */
 					}
 					else
 					{
@@ -79,7 +75,9 @@ marios_queue_op_status_t enqueue(marios_queue* queue, int8_t* msg, unsigned int 
 			{
 				if(MARIOS_BLOCKING_QUEUE_OP == blocking)
 				{
-					mariOS_task_yield();
+					mariOS_task_yield();	/** the yield call has no effect since it is invoked inside a critical section!
+										 	 *	It will eventually have effect once the critical section ends.
+										 	 */
 				}
 				else
 				{
@@ -93,7 +91,7 @@ marios_queue_op_status_t enqueue(marios_queue* queue, int8_t* msg, unsigned int 
 	return MARIOS_QUEUE_SUCCESS_OP;
 }
 
-marios_queue_op_status_t dequeue(marios_queue* queue, int8_t* msg, unsigned int msg_size, marios_blocking_queue_op_t blocking)
+mariOS_queue_op_status_t dequeue(mariOS_queue* queue, int8_t* msg, unsigned int msg_size, mariOS_blocking_queue_op_t blocking)
 {
 	int receivedFlag = 0;
 	while(0 == receivedFlag) //This flag will be set once the writing is achieved
@@ -109,7 +107,9 @@ marios_queue_op_status_t dequeue(marios_queue* queue, int8_t* msg, unsigned int 
 					{
 						queue->tasks_waiting_to_receive[get_current_task_id()] = 1;
 						set_current_task_status(MARIOS_TASK_STATUS_SUSPEND);
-						mariOS_task_yield();
+						mariOS_task_yield(); /** the yield call has no effect since it is invoked inside a critical section!
+											  *	 It will eventually have effect once the critical section ends.
+											  */
 					}
 					else
 					{
@@ -148,7 +148,9 @@ marios_queue_op_status_t dequeue(marios_queue* queue, int8_t* msg, unsigned int 
 			{
 				if(MARIOS_BLOCKING_QUEUE_OP == blocking)
 				{
-					mariOS_task_yield();
+					mariOS_task_yield();	/** the yield call has no effect since it is invoked inside a critical section!
+					 	 	 	 	 	 	 *	 It will eventually have effect once the critical section ends.
+					 	 	 	 	 	 	 */
 				}
 				else
 				{
@@ -162,7 +164,7 @@ marios_queue_op_status_t dequeue(marios_queue* queue, int8_t* msg, unsigned int 
 	return MARIOS_QUEUE_SUCCESS_OP;
 }
 
-void resetQueue(marios_queue* queue)
+void reset_queue(mariOS_queue* queue)
 {
 	if(MARIOS_QUEUE_UNLOCKED == queue->rLock && MARIOS_QUEUE_UNLOCKED == queue->wLock)
 	{

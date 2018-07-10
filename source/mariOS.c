@@ -1,6 +1,5 @@
 #include "mariOS.h"
 
-
 /**
  * Here we define a list containing all tasks that the scheduler must handle.
  * Additionally, the table reports the number of created tasks and the current
@@ -71,7 +70,7 @@ mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size)
 	p_task->handler = handler;
 	if(MARIOS_MINIMUM_TASK_STACK_SIZE >= stack_size)
 		stack_size = MARIOS_MINIMUM_TASK_STACK_SIZE;
-	marios_stack_t *p_stack = (marios_stack_t*) malloc(stack_size*sizeof(marios_stack_t));
+	marios_stack_t *p_stack = malloc(stack_size*sizeof(marios_stack_t));
 	p_task->sp = (uint32_t)(p_stack+stack_size-16);
 	p_task->status = MARIOS_TASK_STATUS_READY;
 	p_task->wait_ticks = 0;

@@ -4,6 +4,9 @@
 #include "marios_config.h"
 #include "port.h"
 
+#include <string.h> //memcpy
+#include <stdlib.h> //malloc
+
 typedef uint32_t marios_stack_t;
 typedef uint16_t mariOS_task_id_t;
 
