@@ -77,7 +77,7 @@ void mariOS_init(void);
  * the scheduler may pick it to be the current executed task, setting it to the
  * status MARIOS_TASK_STATUS_ACTIVE.
  * \param [in] handler is the function pointer
- * \param stack_size [in] decides the size of the task's stack
+ * \param [in] stack_size decides the size of the task's stack
  *
  */
 mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size);
