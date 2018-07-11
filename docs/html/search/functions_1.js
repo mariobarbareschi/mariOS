@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dequeue',['dequeue',['../queue_8h.html#a28d45eca570534d74c9e148f9d26fe99',1,'queue.h']]]
+  ['busfault_5fhandler',['BusFault_Handler',['../stm32f4xx__it_8h.html#a850cefb17a977292ae5eb4cafa9976c3',1,'stm32f4xx_it.h']]]
 ];

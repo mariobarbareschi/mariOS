@@ -1,10 +1,6 @@
 var searchData=
 [
-  ['marios_5fdelay',['mariOS_delay',['../mari_o_s_8h.html#a8027dcd13880c2971f3627b052b481b3',1,'mariOS.h']]],
-  ['marios_5finit',['mariOS_init',['../mari_o_s_8h.html#a145925a06d731acd607bed860d7d57e2',1,'mariOS.h']]],
-  ['marios_5fscheduler',['mariOS_scheduler',['../mari_o_s_8h.html#ab7b836592c7610e95c89ae7989b63d63',1,'mariOS.h']]],
-  ['marios_5fstart',['mariOS_start',['../mari_o_s_8h.html#a74fd826d4eb7eee7307361c3c9a8a404',1,'mariOS.h']]],
-  ['marios_5fsystick_5fhandler',['mariOS_systick_handler',['../mari_o_s_8h.html#a62b1be2538fbcb50d26e830cc0b7a1d8',1,'mariOS.h']]],
-  ['marios_5ftask_5finit',['mariOS_task_init',['../mari_o_s_8h.html#af84cc3fb915d6a38431cce3e3fd20a93',1,'mariOS.h']]],
-  ['marios_5ftask_5fyield',['mariOS_task_yield',['../mari_o_s_8h.html#aa1ce5071a73faddfee5255c059bcde9f',1,'mariOS.h']]]
+  ['get_5fcurrent_5ftask_5fid',['get_current_task_id',['../mari_o_s_8c.html#a203ea856aabbfe98ca3f54e1ce235ed5',1,'get_current_task_id(void):&#160;mariOS.c'],['../mari_o_s_8h.html#a203ea856aabbfe98ca3f54e1ce235ed5',1,'get_current_task_id(void):&#160;mariOS.c']]],
+  ['get_5fcurrent_5ftask_5fstatus',['get_current_task_status',['../mari_o_s_8c.html#a72e631d3a2ed9e11836f0f1149ba65b2',1,'get_current_task_status(void):&#160;mariOS.c'],['../mari_o_s_8h.html#a72e631d3a2ed9e11836f0f1149ba65b2',1,'get_current_task_status(void):&#160;mariOS.c']]],
+  ['get_5ftask_5fstatus',['get_task_status',['../mari_o_s_8c.html#a228860664d47f77e7b5b7195b0242021',1,'get_task_status(mariOS_task_id_t task_id):&#160;mariOS.c'],['../mari_o_s_8h.html#a228860664d47f77e7b5b7195b0242021',1,'get_task_status(mariOS_task_id_t task_id):&#160;mariOS.c']]]
 ];

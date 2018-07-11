@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['get_5fcurrent_5ftask_5fid',['get_current_task_id',['../mari_o_s_8h.html#a203ea856aabbfe98ca3f54e1ce235ed5',1,'mariOS.h']]],
-  ['get_5fcurrent_5ftask_5fstatus',['get_current_task_status',['../mari_o_s_8h.html#a72e631d3a2ed9e11836f0f1149ba65b2',1,'mariOS.h']]],
-  ['get_5ftask_5fstatus',['get_task_status',['../mari_o_s_8h.html#a228860664d47f77e7b5b7195b0242021',1,'mariOS.h']]]
+  ['debugmon_5fhandler',['DebugMon_Handler',['../stm32f4xx__it_8h.html#adbdfb05858cc36fc520974df37ec3cb0',1,'stm32f4xx_it.h']]],
+  ['dequeue',['dequeue',['../queue_8c.html#a0e97fa79cc3ad6c2235d99e99ef107ec',1,'dequeue(mariOS_queue *queue, int8_t *msg, unsigned int msg_size, mariOS_blocking_queue_op_t blocking):&#160;queue.c'],['../queue_8h.html#a28d45eca570534d74c9e148f9d26fe99',1,'dequeue(mariOS_queue *queue, int8_t *msg, unsigned int size, mariOS_blocking_queue_op_t blocking):&#160;queue.c']]]
 ];

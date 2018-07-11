@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['queue_2eh',['queue.h',['../queue_8h.html',1,'']]],
-  ['queue_5ft',['queue_t',['../structqueue__t.html',1,'']]],
-  ['queuememory',['queueMemory',['../structqueue__t.html#a5a3c1755403b9945be005f3301291b5b',1,'queue_t']]]
+  ['last_5factive_5ftime',['last_active_time',['../structmari_o_s__task__control__block__t.html#a93580aea075f624b92de8f36a7811927',1,'mariOS_task_control_block_t']]],
+  ['loadfirsttask',['loadFirstTask',['../port_8c.html#a84380d5a78e52a1ea7176177e2e62c70',1,'loadFirstTask():&#160;port.c'],['../port_8h.html#a84380d5a78e52a1ea7176177e2e62c70',1,'loadFirstTask():&#160;port.c']]]
 ];

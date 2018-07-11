@@ -1,8 +1,32 @@
-/*
- * queue.c
+/**
+ ******************************************************************************
  *
- *  Created on: 02 lug 2018
- *      Author: mariobarbareschi
+ * @file 	queue.c
+ * @author 	Mario Barbareschi <mario.barbareschi@unina.it>
+ * @version V1.0
+ * @date    11-July-2018
+ * @brief 	Implementation file of mariOS queue. It just contains
+ * 			implementation of function declared in the corresponding header file
+ *
+ ******************************************************************************
+ * @attention
+ *
+ *  Copyright (C) 2018  Mario Barbareschi
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************
  */
 
 #include "queue.h"
@@ -12,9 +36,9 @@ mariOS_queue* createQueue(unsigned int size)
 	mariOS_queue* queue = (mariOS_queue*) malloc(sizeof(mariOS_queue));
 	queue->size = size;
 	queue->queueMemory = malloc(size);
-	queue->rLock = MARIOS_QUEUE_UNLOCKED;
+	queue->rLock = MARIOS_QUEUE_UNLOCKED; /** we assume to create an unlocked queue */
 	queue->wLock = MARIOS_QUEUE_UNLOCKED;
-	reset_queue(queue);
+	reset_queue(queue); /** reset_queue() is used to perform remaining initializations */
 	return queue;
 }
 
@@ -39,7 +63,11 @@ mariOS_queue_op_status_t enqueue(mariOS_queue* queue, int8_t* msg, unsigned int 
 						 	 	 	 	 	  */
 					}
 					else
-					{
+					{ /**
+						* Since we are executing a non-blocking enqueue, we return from this function signaling that
+						* the queue is full (::MARIOS_QUEUE_FULL_OP). Before returning, we must exit from the critical
+						* section as well as we must unlock the writing operations on the queue
+					    */
 						queue->wLock = MARIOS_QUEUE_UNLOCKED;
 						exit_critical_sction();
 						return MARIOS_QUEUE_FULL_OP;
@@ -75,12 +103,16 @@ mariOS_queue_op_status_t enqueue(mariOS_queue* queue, int8_t* msg, unsigned int 
 			{
 				if(MARIOS_BLOCKING_QUEUE_OP == blocking)
 				{
-					mariOS_task_yield();	/** the yield call has no effect since it is invoked inside a critical section!
+					mariOS_task_yield();	/** The yield call has no effect since it is invoked inside a critical section!
 										 	 *	It will eventually have effect once the critical section ends.
 										 	 */
 				}
 				else
-				{
+				{  /**
+					* Since we are executing a non-blocking enqueue, we return from this function signaling that
+					* the queue is busy (::MARIOS_QUEUE_BUSY_OP). Before returning, we must exit from the critical
+					* section
+				    */
 					exit_critical_sction();
 					return MARIOS_QUEUE_BUSY_OP;
 				}
@@ -88,6 +120,10 @@ mariOS_queue_op_status_t enqueue(mariOS_queue* queue, int8_t* msg, unsigned int 
 		}
 		exit_critical_sction();
 	}
+	/**
+	 * Reaching this point implies that the while loop terminates upon the condition writtenFlag != 0,
+	 * meaning that we successfully enqueued a message
+	 */
 	return MARIOS_QUEUE_SUCCESS_OP;
 }
 
@@ -112,7 +148,11 @@ mariOS_queue_op_status_t dequeue(mariOS_queue* queue, int8_t* msg, unsigned int 
 											  */
 					}
 					else
-					{
+					{  /**
+						* Since we are executing a non-blocking dequeue, we return from this function signaling that
+						* the queue is empty (::MARIOS_QUEUE_EMPTY_OP). Before returning, we must exit from the critical
+						* section as well as we must unlock the reading operations on the queue
+					    */
 						queue->wLock = MARIOS_QUEUE_UNLOCKED;
 						exit_critical_sction();
 						return MARIOS_QUEUE_EMPTY_OP;
@@ -153,7 +193,11 @@ mariOS_queue_op_status_t dequeue(mariOS_queue* queue, int8_t* msg, unsigned int 
 					 	 	 	 	 	 	 */
 				}
 				else
-				{
+				{  /**
+					* Since we are executing a non-blocking dequeue, we return from this function signaling that
+					* the queue is busy (::MARIOS_QUEUE_BUSY_OP). Before returning, we must exit from the critical
+					* section.
+				    */
 					exit_critical_sction();
 					return MARIOS_QUEUE_BUSY_OP;
 				}
@@ -161,12 +205,16 @@ mariOS_queue_op_status_t dequeue(mariOS_queue* queue, int8_t* msg, unsigned int 
 		}
 		exit_critical_sction();
 	}
+	/**
+	 * Reaching this point implies that the while loop terminates upon the condition receivedFlag != 0,
+	 * meaning that we successfully dequeue a message
+	 */
 	return MARIOS_QUEUE_SUCCESS_OP;
 }
 
 void reset_queue(mariOS_queue* queue)
 {
-	if(MARIOS_QUEUE_UNLOCKED == queue->rLock && MARIOS_QUEUE_UNLOCKED == queue->wLock)
+	if(MARIOS_QUEUE_UNLOCKED == queue->rLock && MARIOS_QUEUE_UNLOCKED == queue->wLock) /** before continue, we must be sure the queue are not blocked */
 	{
 		int i;
 		for(i = 0; i < queue->size; i++)

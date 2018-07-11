@@ -1,12 +1,37 @@
-/*
- * port.c
+/**
+ ******************************************************************************
  *
- *  Created on: 29 giu 2018
- *      Author: mariobarbareschi
+ * @file 	port.c
+ * @author 	Mario Barbareschi <mario.barbareschi@unina.it>
+ * @version V1.3
+ * @date    29-June-2018
+ * @brief 	Implementation file for function of port.h, in particular for
+ * 			supporting ARM Cortex M3/M4 uC.
+ *
+ ******************************************************************************
+ * @attention
+ *
+ *  Copyright (C) 2018  Mario Barbareschi
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************
  */
 
+
+#include <mariOS_config.h>
 #include "port.h"
-#include "marios_config.h"
 
 
 void loadFirstTask(){
@@ -28,7 +53,7 @@ void loadFirstTask(){
 
 void SVC_Handler(){
 	__asm volatile(
-			" ldr	r2,=marios_curr_task 		\n"
+			" ldr	r2,=mariOS_curr_task 		\n"
 			" ldr r1, [r2]						\n"
 			" ldr r0, [r1] 						\n"//Get the stack pointer of the task
 			" ldmia r0!, {r4-r11}				\n" // Pop registers that will be not automatically loaded on exception entry
@@ -92,14 +117,14 @@ __attribute__(( naked )) void PendSV_Handler(){
 			+------+
 			 */
 			/* Save current task's SP: */
-			" ldr	r2, =marios_curr_task 	\n"
+			" ldr	r2, =mariOS_curr_task 	\n"
 			" ldr	r1, [r2] 				\n"
 			" str	r0, [r1] 				\n"
 
 			//Now we are ready to load the new context overwriting the one into the CPU
 
 			/* Load next task's SP: */
-			" ldr	r2, =marios_next_task 	\n"
+			" ldr	r2, =mariOS_next_task 	\n"
 			" ldr	r1, [r2] 				\n"
 			" ldr	r0, [r1] 				\n"//Got the stack pointer
 

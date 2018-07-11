@@ -67,6 +67,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>This struct is used to typedef the mariOS queue. It is a cyclic queue with pointers to the head and tail. The structure contains two arrays containing suspended task reference for enqueue and dequeue operations.  
+ <a href="structqueue__t.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="queue_8h_source.html">queue.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -81,9 +84,9 @@ Data Fields</h2></td></tr>
 <tr class="separator:ac6c2ff84f67a608cb66c1ea4f444b097"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a3c1755403b9945be005f3301291b5b"><td class="memItemLeft" align="right" valign="top">int8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqueue__t.html#a5a3c1755403b9945be005f3301291b5b">queueMemory</a></td></tr>
 <tr class="separator:a5a3c1755403b9945be005f3301291b5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa634f12fb1d05a0065b87cde43cc2c89"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqueue__t.html#aa634f12fb1d05a0065b87cde43cc2c89">tasks_waiting_to_send</a> [<a class="el" href="marios__config_8h.html#af930526d08eb3382941b13342f41bf10">MARIOS_CONFIG_MAX_TASKS</a>]</td></tr>
+<tr class="memitem:aa634f12fb1d05a0065b87cde43cc2c89"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqueue__t.html#aa634f12fb1d05a0065b87cde43cc2c89">tasks_waiting_to_send</a> [<a class="el" href="mari_o_s__config_8h.html#af930526d08eb3382941b13342f41bf10">MARIOS_CONFIG_MAX_TASKS</a>]</td></tr>
 <tr class="separator:aa634f12fb1d05a0065b87cde43cc2c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93aef13d250c24044e5c5642363adcc2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqueue__t.html#a93aef13d250c24044e5c5642363adcc2">tasks_waiting_to_receive</a> [<a class="el" href="marios__config_8h.html#af930526d08eb3382941b13342f41bf10">MARIOS_CONFIG_MAX_TASKS</a>]</td></tr>
+<tr class="memitem:a93aef13d250c24044e5c5642363adcc2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqueue__t.html#a93aef13d250c24044e5c5642363adcc2">tasks_waiting_to_receive</a> [<a class="el" href="mari_o_s__config_8h.html#af930526d08eb3382941b13342f41bf10">MARIOS_CONFIG_MAX_TASKS</a>]</td></tr>
 <tr class="separator:a93aef13d250c24044e5c5642363adcc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff5d379a9e52bb26c4518a37370e7636"><td class="memItemLeft" align="right" valign="top">volatile <a class="el" href="queue_8h.html#a4385d73a50ac726301719a41792283f1">mariOS_queue_status_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structqueue__t.html#aff5d379a9e52bb26c4518a37370e7636">rLock</a></td></tr>
 <tr class="separator:aff5d379a9e52bb26c4518a37370e7636"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,7 +192,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t queue_t::tasks_waiting_to_receive[<a class="el" href="marios__config_8h.html#af930526d08eb3382941b13342f41bf10">MARIOS_CONFIG_MAX_TASKS</a>]</td>
+          <td class="memname">uint8_t queue_t::tasks_waiting_to_receive[<a class="el" href="mari_o_s__config_8h.html#af930526d08eb3382941b13342f41bf10">MARIOS_CONFIG_MAX_TASKS</a>]</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -204,7 +207,7 @@ Data Fields</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t queue_t::tasks_waiting_to_send[<a class="el" href="marios__config_8h.html#af930526d08eb3382941b13342f41bf10">MARIOS_CONFIG_MAX_TASKS</a>]</td>
+          <td class="memname">uint8_t queue_t::tasks_waiting_to_send[<a class="el" href="mari_o_s__config_8h.html#af930526d08eb3382941b13342f41bf10">MARIOS_CONFIG_MAX_TASKS</a>]</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -233,7 +236,7 @@ Data Fields</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 10 2018 23:35:46 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 11 2018 15:06:15 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

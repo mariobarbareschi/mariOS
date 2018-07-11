@@ -70,6 +70,9 @@ $(function() {
 <div class="title">port.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>This header file specifies functions that are needed to mariOS for being executed onto a specific architecture. This one, in particular, is for getting mariOS ran onto an ARM Cortex M3/M4 uC.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;inttypes.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for port.h:</div>
@@ -81,8 +84,13 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="port_8h__dep__incl.png" border="0" usemap="#include_2port_8hdep" alt=""/></div>
 <map name="include_2port_8hdep" id="include_2port_8hdep">
-<area shape="rect" id="node2" href="mari_o_s_8h.html" title="include/mariOS.h" alt="" coords="5,80,104,107"/>
-<area shape="rect" id="node3" href="queue_8h.html" title="include/queue.h" alt="" coords="9,155,101,181"/>
+<area shape="rect" id="node2" href="port_8c.html" title="Implementation file for function of port.h, in particular for supporting ARM Cortex M3/M4 uC..." alt="" coords="19,80,99,107"/>
+<area shape="rect" id="node3" href="mari_o_s_8h.html" title="Header file of main functionalities of mariOS. This file provides the mariOS task status enum..." alt="" coords="123,80,221,107"/>
+<area shape="rect" id="node4" href="mari_o_s_8c.html" title="Implementation file of main functionalities of mariOS. This file provides the system&#39;s tasks list str..." alt="" coords="5,155,101,181"/>
+<area shape="rect" id="node5" href="queue_8h.html" title="Header file of mariOS queue. This file contains some enum definitions (namely mariOS_queue_status_t, mariOS_blocking_queue_op_t and mariOS_queue_op_status_t ), the queue structure, which is exploited by queue accessory functions. " alt="" coords="126,155,218,181"/>
+<area shape="rect" id="node8" href="stm32f4xx__it_8c.html" title="Default Interrupt Service Routines. " alt="" coords="242,155,369,181"/>
+<area shape="rect" id="node6" href="queue_8c.html" title="Implementation file of mariOS queue. It just contains implementation of function declared in the corr..." alt="" coords="68,229,159,256"/>
+<area shape="rect" id="node7" href="main_8c.html" title="Default main function. " alt="" coords="183,229,275,256"/>
 </map>
 </div>
 </div>
@@ -91,21 +99,38 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a84380d5a78e52a1ea7176177e2e62c70"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="port_8h.html#a84380d5a78e52a1ea7176177e2e62c70">loadFirstTask</a> ()</td></tr>
+<tr class="memdesc:a84380d5a78e52a1ea7176177e2e62c70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Once the system is configured and ready for executing the user application, we need to get back a pristine system state, especially regarding the privileged stack. Once everything is cleaned, the system must trigger the first context switch via software interrupt.  <a href="#a84380d5a78e52a1ea7176177e2e62c70">More...</a><br /></td></tr>
 <tr class="separator:a84380d5a78e52a1ea7176177e2e62c70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf8e036d55ca81e8edaeb41e4a50976b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="port_8h.html#aaf8e036d55ca81e8edaeb41e4a50976b">SVC_Handler</a> ()</td></tr>
+<tr class="memdesc:aaf8e036d55ca81e8edaeb41e4a50976b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This SVC handler does provide only one interrupt. It performs the first task loading onto the uC, sets the Base Priority Mask Register to the lowest value. These commands need to be executed by the supervisor call since they need the privilege mode.  <a href="#aaf8e036d55ca81e8edaeb41e4a50976b">More...</a><br /></td></tr>
 <tr class="separator:aaf8e036d55ca81e8edaeb41e4a50976b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0eea14388b14c9e1baa3b040df2e243f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="port_8h.html#a0eea14388b14c9e1baa3b040df2e243f">PendSV_Handler</a> () __attribute__((naked))</td></tr>
+<tr class="memitem:a0eea14388b14c9e1baa3b040df2e243f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="port_8h.html#a0eea14388b14c9e1baa3b040df2e243f">PendSV_Handler</a> () <a class="el" href="port_8c.html#a2804a023941a956288c32ad08b2cf59e">__attribute__</a>((naked))</td></tr>
+<tr class="memdesc:a0eea14388b14c9e1baa3b040df2e243f"><td class="mdescLeft">&#160;</td><td class="mdescRight">MariOS achieves the context switch by triggering the PendSV interrupt. For ARM architectures, PendSV is an interrupt-driven request for system-level service mainly used to completes the context switch. The function body is well documented.  <a href="#a0eea14388b14c9e1baa3b040df2e243f">More...</a><br /></td></tr>
 <tr class="separator:a0eea14388b14c9e1baa3b040df2e243f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58c8b2ad0ea491a6642e5e1cbd358c89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="port_8h.html#a58c8b2ad0ea491a6642e5e1cbd358c89">yield</a> ()</td></tr>
+<tr class="memdesc:a58c8b2ad0ea491a6642e5e1cbd358c89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whenever the scheduler wants to remove the current task in favor of another task, it can explicitly call the yield function, which will trigger the <a class="el" href="port_8h.html#a0eea14388b14c9e1baa3b040df2e243f" title="MariOS achieves the context switch by triggering the PendSV interrupt. For ARM architectures, PendSV is an interrupt-driven request for system-level service mainly used to completes the context switch. The function body is well documented. ">PendSV_Handler()</a> and, hence, the context switch.  <a href="#a58c8b2ad0ea491a6642e5e1cbd358c89">More...</a><br /></td></tr>
 <tr class="separator:a58c8b2ad0ea491a6642e5e1cbd358c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22857ed9823f022f5988f9afdbb8994e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="port_8h.html#a22857ed9823f022f5988f9afdbb8994e">enter_critical_section</a> ()</td></tr>
+<tr class="memdesc:a22857ed9823f022f5988f9afdbb8994e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function enter_critical_section must guarantee that no other task can access shared resources of the system before calling the exit_critical_sction. This property can be simply achieved by disabling the system interrupts.  <a href="#a22857ed9823f022f5988f9afdbb8994e">More...</a><br /></td></tr>
 <tr class="separator:a22857ed9823f022f5988f9afdbb8994e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c958c081c18f69c4e77d463d88dfc0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="port_8h.html#a7c958c081c18f69c4e77d463d88dfc0d">exit_critical_sction</a> ()</td></tr>
+<tr class="memdesc:a7c958c081c18f69c4e77d463d88dfc0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The function exit_critical_sction guarantees that the current task can be preempt by the scheduler in favor of other tasks. This property can be simply achieved by enabling the system interrupts.  <a href="#a7c958c081c18f69c4e77d463d88dfc0d">More...</a><br /></td></tr>
 <tr class="separator:a7c958c081c18f69c4e77d463d88dfc0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a733949d55467f26805cac11130a0e667"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="port_8h.html#a733949d55467f26805cac11130a0e667">configureSystick</a> (uint32_t systick_ticks)</td></tr>
+<tr class="memdesc:a733949d55467f26805cac11130a0e667"><td class="mdescLeft">&#160;</td><td class="mdescRight">The configureSystick function hides the main mechanism on which an RTOS is based, that is periodic interrupts from a system timer. A proper clock period must be select to generate a good interrupt period. Too short period may lead to low efficiency due to the fact that the RTOS routines (and scheduler too) are uselessly executed. Vice versa, Too large period may give to the RTOS less control on system execution.  <a href="#a733949d55467f26805cac11130a0e667">More...</a><br /></td></tr>
 <tr class="separator:a733949d55467f26805cac11130a0e667"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This header file specifies functions that are needed to mariOS for being executed onto a specific architecture. This one, in particular, is for getting mariOS ran onto an ARM Cortex M3/M4 uC. </p>
+<dl class="section author"><dt>Author</dt><dd>Mario Barbareschi <a href="#" onclick="location.href='mai'+'lto:'+'mar'+'io'+'.ba'+'rb'+'are'+'sc'+'hi@'+'un'+'ina'+'.i'+'t'; return false;">mario<span style="display: none;">.nosp@m.</span>.bar<span style="display: none;">.nosp@m.</span>bares<span style="display: none;">.nosp@m.</span>chi@<span style="display: none;">.nosp@m.</span>unina<span style="display: none;">.nosp@m.</span>.it</a> </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>V1.3 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>29-June-2018 </dd></dl>
+<dl class="section attention"><dt>Attention</dt><dd></dd></dl>
+<p>Copyright (C) 2018 Mario Barbareschi</p>
+<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.</p>
+<p>You should have received a copy of the GNU Affero General Public License along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. </p>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="a733949d55467f26805cac11130a0e667"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a733949d55467f26805cac11130a0e667">&#9670;&nbsp;</a></span>configureSystick()</h2>
 
@@ -121,14 +146,24 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The configureSystick function hides the main mechanism on which an RTOS is based, that is periodic interrupts from a system timer. A proper clock period must be select to generate a good interrupt period. Too short period may lead to low efficiency due to the fact that the RTOS routines (and scheduler too) are uselessly executed. Vice versa, Too large period may give to the RTOS less control on system execution.</p>
+
+<p>The configureSystick function hides the main mechanism on which an RTOS is based, that is periodic interrupts from a system timer. A proper clock period must be select to generate a good interrupt period. Too short period may lead to low efficiency due to the fact that the RTOS routines (and scheduler too) are uselessly executed. Vice versa, Too large period may give to the RTOS less control on system execution. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">systick_ticks</td><td>is the number of ticks between two interrupts </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
+<p class="reference">References <a class="el" href="group___s_t_m32_f4xx___system___private___variables.html#gaa3cd3e43291e81e795d642b79b6088e6">SystemCoreClock</a>.</p>
+<div class="fragment"><div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;{</div><div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        uint32_t ret_val = SysTick_Config(<a class="code" href="group___s_t_m32_f4xx___system___private___variables.html#gaa3cd3e43291e81e795d642b79b6088e6">SystemCoreClock</a>/systick_ticks);</div><div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keywordflow">if</span> (ret_val != 0)</div><div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                <span class="keywordflow">return</span> -1;</div><div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;}</div><div class="ttc" id="group___s_t_m32_f4xx___system___private___variables_html_gaa3cd3e43291e81e795d642b79b6088e6"><div class="ttname"><a href="group___s_t_m32_f4xx___system___private___variables.html#gaa3cd3e43291e81e795d642b79b6088e6">SystemCoreClock</a></div><div class="ttdeci">uint32_t SystemCoreClock</div><div class="ttdef"><b>Definition:</b> system_stm32f4xx.c:125</div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a22857ed9823f022f5988f9afdbb8994e"></a>
@@ -145,8 +180,21 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The function enter_critical_section must guarantee that no other task can access shared resources of the system before calling the exit_critical_sction. This property can be simply achieved by disabling the system interrupts. </p>
 
+<p>The function enter_critical_section must guarantee that no other task can access shared resources of the system before calling the exit_critical_sction. This property can be simply achieved by disabling the system interrupts. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;{</div><div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        __disable_irq();</div><div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;}</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a7c958c081c18f69c4e77d463d88dfc0d"></a>
@@ -163,8 +211,21 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The function exit_critical_sction guarantees that the current task can be preempt by the scheduler in favor of other tasks. This property can be simply achieved by enabling the system interrupts. </p>
 
+<p>The function exit_critical_sction guarantees that the current task can be preempt by the scheduler in favor of other tasks. This property can be simply achieved by enabling the system interrupts. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;{</div><div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        __enable_irq();</div><div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;}</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a84380d5a78e52a1ea7176177e2e62c70"></a>
@@ -181,9 +242,22 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Once the system is configured and ready for executing the user application, we need to get back a pristine system state, especially regarding the privileged stack. Once everything is cleaned, the system must trigger the first context switch via software interrupt.</p>
-<p>As for ARM Cortex M3 and M4, we perform the stack reset by retreiving the initial stack pointer value from the interrupt table vector, while the first context switch is due to the SVC call. Since no more than one supervisor call is provided, we assume to call the number 0. </p>
 
+<p>Once the system is configured and ready for executing the user application, we need to get back a pristine system state, especially regarding the privileged stack. Once everything is cleaned, the system must trigger the first context switch via software interrupt. </p>
+<p>As for ARM Cortex M3 and M4, we perform the stack reset by retreiving the initial stack pointer value from the interrupt table vector, while the first context switch is due to the SVC call. Since no more than one supervisor call is provided, we assume to call the number 0.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                    {</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        __asm <span class="keyword">volatile</span>( <span class="comment">//&quot; ldr r0,=_estack             \n&quot; //Take the original master stack pointer from the system startup</span></div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                        <span class="stringliteral">&quot; ldr R0,=0xE000ED08    \n&quot;</span> <span class="comment">//Set R0 to VTOR address</span></div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                        <span class="stringliteral">&quot; ldr r0, [r0]                  \n&quot;</span> <span class="comment">//Load VTOR</span></div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                        <span class="stringliteral">&quot; ldr r0, [r0]                  \n&quot;</span> <span class="comment">//Load initial MSP value</span></div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                        <span class="stringliteral">&quot; msr msp, r0                   \n&quot;</span> <span class="comment">// Set the msp back to the start of the stack</span></div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                        <span class="stringliteral">&quot; cpsie i                               \n&quot;</span> <span class="comment">//enable interrupt for getting the SWI 0</span></div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                        <span class="stringliteral">&quot; dsb                                   \n&quot;</span> <span class="comment">//No instruction in program order after this instruction executes until this instruction completes</span></div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                        <span class="stringliteral">&quot; isb                                   \n&quot;</span> <span class="comment">//It ensures that the effects of context altering operations, such as changing the ASID, or completed TLB maintenance operations, or branch predictor maintenance operations</span></div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                        <span class="stringliteral">&quot; svc 0                                 \n&quot;</span> <span class="comment">// we invoke a SWI to start first task. */</span></div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                        <span class="stringliteral">&quot; nop                                   \n&quot;</span></div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                        <span class="stringliteral">&quot; .align 2                              \n&quot;</span></div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        );</div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a0eea14388b14c9e1baa3b040df2e243f"></a>
@@ -200,8 +274,21 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>mariOS achieve the context switch by triggering the PendSV interrupt. For ARM architectures, PendSV is an interrupt-driven request for system-level service mainly used to completes the context switch. The function body is well documented.</p>
-<p>It exploits two handers, namely marios_curr_task and marios_next_task. Before calling the first instruction of the PendSV_Handler, the uC has already pushed 8 4-byte values onto the stack, including first 4 general registers, of the task marios_curr_task. Once the remaining register have been pushed onto the marios_curr_task stack, the execution context of marios_next_task is restored by replay same steps, but in opposite direction. First, the stack pointer of marios_next_task is loaded, then registers are restored, except for the first 4 which will be automatically restored at the exit. </p>
+
+<p>MariOS achieves the context switch by triggering the PendSV interrupt. For ARM architectures, PendSV is an interrupt-driven request for system-level service mainly used to completes the context switch. The function body is well documented. </p>
+<p>It exploits two handers, namely marios_curr_task and marios_next_task. Before calling the first instruction of the PendSV_Handler, the uC has already pushed 8 4-byte values onto the stack, including first 4 general registers, of the task marios_curr_task. Once the remaining register have been pushed onto the marios_curr_task stack, the execution context of marios_next_task is restored by replay same steps, but in opposite direction. First, the stack pointer of marios_next_task is loaded, then registers are restored, except for the first 4 which will be automatically restored at the exit.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -219,8 +306,21 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This SVC handler do provide only one interrupt. It performs the first task loading onto the uC, sets the Base Priority Mask Register to the lowest value. These commands need to be executed by the supervisor call since they need the privilege mode. </p>
 
+<p>This SVC handler does provide only one interrupt. It performs the first task loading onto the uC, sets the Base Priority Mask Register to the lowest value. These commands need to be executed by the supervisor call since they need the privilege mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                  {</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        __asm <span class="keyword">volatile</span>(</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                        <span class="stringliteral">&quot; ldr   r2,=mariOS_curr_task            \n&quot;</span></div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                        <span class="stringliteral">&quot; ldr r1, [r2]                                          \n&quot;</span></div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                        <span class="stringliteral">&quot; ldr r0, [r1]                                          \n&quot;</span><span class="comment">//Get the stack pointer of the task</span></div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                        <span class="stringliteral">&quot; ldmia r0!, {r4-r11}                           \n&quot;</span> <span class="comment">// Pop registers that will be not automatically loaded on exception entry</span></div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                        <span class="stringliteral">&quot; msr psp, r0                                           \n&quot;</span></div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                        <span class="stringliteral">&quot; mov r0, #0                                            \n&quot;</span> <span class="comment">//Set 0 to basepri</span></div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                        <span class="stringliteral">&quot; msr   basepri, r0                                     \n&quot;</span></div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                        <span class="comment">//Note that remaining registers are going to be automatically restored by returning from the ISR</span></div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                        <span class="comment">/* EXC_RETURN - Thread mode with PSP: */</span></div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                        <span class="stringliteral">&quot; orr r14, #0xd                                         \n&quot;</span></div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                        <span class="stringliteral">&quot; bx r14                                                        \n&quot;</span></div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                        <span class="stringliteral">&quot; .align 2                                                      \n&quot;</span></div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        );</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div></div><!-- fragment -->
 </div>
 </div>
 <a id="a58c8b2ad0ea491a6642e5e1cbd358c89"></a>
@@ -237,14 +337,27 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Whenever the scheduler wants to remove the current task in favor of another task, it can explicitly call the yield function, which will trigger the PendSV_Handler and, hence, the context switch. </p>
 
+<p>Whenever the scheduler wants to remove the current task in favor of another task, it can explicitly call the yield function, which will trigger the <a class="el" href="port_8h.html#a0eea14388b14c9e1baa3b040df2e243f" title="MariOS achieves the context switch by triggering the PendSV interrupt. For ARM architectures, PendSV is an interrupt-driven request for system-level service mainly used to completes the context switch. The function body is well documented. ">PendSV_Handler()</a> and, hence, the context switch. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            {</div><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        SCB-&gt;ICSR |= SCB_ICSR_PENDSVSET_Msk;</div><div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        __DSB(); <span class="comment">//__asm volatile( &quot;dsb&quot; );</span></div><div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        __ISB(); <span class="comment">//__asm volatile( &quot;isb&quot; );</span></div><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;}</div></div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Jul 10 2018 23:35:46 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 11 2018 15:06:15 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

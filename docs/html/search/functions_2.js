@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['enqueue',['enqueue',['../queue_8h.html#ad9d276ceb282ab1c8fb136f9c6374421',1,'queue.h']]],
-  ['enter_5fcritical_5fsection',['enter_critical_section',['../port_8h.html#a22857ed9823f022f5988f9afdbb8994e',1,'port.h']]],
-  ['exit_5fcritical_5fsction',['exit_critical_sction',['../port_8h.html#a7c958c081c18f69c4e77d463d88dfc0d',1,'port.h']]]
+  ['configuresystick',['configureSystick',['../port_8c.html#a733949d55467f26805cac11130a0e667',1,'configureSystick(uint32_t systick_ticks):&#160;port.c'],['../port_8h.html#a733949d55467f26805cac11130a0e667',1,'configureSystick(uint32_t systick_ticks):&#160;port.c']]],
+  ['createqueue',['createQueue',['../queue_8c.html#acd6684134d243b3e027d3d490e0936ba',1,'createQueue(unsigned int size):&#160;queue.c'],['../queue_8h.html#acd6684134d243b3e027d3d490e0936ba',1,'createQueue(unsigned int size):&#160;queue.c']]]
 ];

@@ -1,3 +1,38 @@
+/**
+ ******************************************************************************
+ *
+ * @file 	mariOS.c
+ * @author 	Mario Barbareschi <mario.barbareschi@unina.it>
+ * @version V1.1
+ * @date    10-July-2018
+ * @brief 	Implementation file of main functionalities of mariOS.
+ *		  	This file provides the system's tasks list structure, the mariOS
+ *		  	ticks variable, two pointers that are used for the context switch by
+ *		  	porting function and configured each time the scheduler is invoked.
+ *		  	Additionally, this file contains the implementation of the idle task
+ *		  	and the function executed by completed task.
+ *
+ ******************************************************************************
+ * @attention
+ *
+ *  Copyright (C) 2018  Mario Barbareschi
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************
+ */
+
 #include "mariOS.h"
 
 /**
@@ -22,8 +57,8 @@ volatile uint32_t mariOS_ticks;
  * and one that has just been scheduled as next one. Once the yield
  * accomplishes, these variables are equal to each other.
  */
-mariOS_task_control_block_t* volatile marios_curr_task;
-mariOS_task_control_block_t* volatile marios_next_task;
+mariOS_task_control_block_t* volatile mariOS_curr_task;
+mariOS_task_control_block_t* volatile mariOS_next_task;
 
 /**
  * mariOS_idle is the system idle task. It should be modified accordingly to
@@ -56,7 +91,11 @@ void mariOS_init(void)
 {
 	memset(&mariOS_tasks_list, 0, sizeof(mariOS_tasks_list));
 	mariOS_ticks = 0;
-	mariOS_task_init(mariOS_idle, MARIOS_IDLE_TASK_STACK); /** the current idle process implementation does not need a lot of space */
+	/**
+	 * Current idle process implementation does not need a lot of space,
+	 * even though its minimum size depends on the target architecture.
+	 */
+	mariOS_task_init(mariOS_idle, MARIOS_IDLE_TASK_STACK);
 }
 
 mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size)
@@ -70,7 +109,7 @@ mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size)
 	p_task->handler = handler;
 	if(MARIOS_MINIMUM_TASK_STACK_SIZE >= stack_size)
 		stack_size = MARIOS_MINIMUM_TASK_STACK_SIZE;
-	marios_stack_t *p_stack = malloc(stack_size*sizeof(marios_stack_t));
+	mariOS_stack_t *p_stack = malloc(stack_size*sizeof(mariOS_stack_t));
 	p_task->sp = (uint32_t)(p_stack+stack_size-16);
 	p_task->status = MARIOS_TASK_STATUS_READY;
 	p_task->wait_ticks = 0;
@@ -85,7 +124,8 @@ mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size)
 
 	mariOS_tasks_list.size++;
 
-	return (mariOS_tasks_list.size-1); /** The taskID of tasks starts from 0, while mariOS_idle does not have any ID, even though its index is 0 */
+	/** The taskID of tasks starts from 0, while mariOS_idle does not have any ID, even though its index is 0 */
+	return (mariOS_tasks_list.size-1);
 }
 
 int mariOS_start(uint32_t systick_ticks)
@@ -93,10 +133,10 @@ int mariOS_start(uint32_t systick_ticks)
 	configureSystick(systick_ticks);
 
 	/* Start the first task: should be the first non-idle */
-	marios_curr_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task];
+	mariOS_curr_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task];
 
 	loadFirstTask();
-	//This point should be never reached
+	/** This point should be never reached */
 	return 0;
 }
 
@@ -119,14 +159,15 @@ void marios_systick_handler(void)
 void mariOS_task_yield(void)
 {
 	mariOS_scheduler();
-	marios_next_task->last_active_time = mariOS_ticks;
-	if(marios_next_task != marios_curr_task)
+	mariOS_next_task->last_active_time = mariOS_ticks;
+	if(mariOS_next_task != mariOS_curr_task)
 	{
-		yield(); /** Actually, we are triggering the activation of the PendSV_Handler */
+		yield(); /** Actually, we are triggering the activation of the PendSV_Handler() */
 	}
 }
 
-/** mariOS scheduler makes use of this function for picking a task. If another algorithm
+/**
+ * mariOS scheduler makes use of this function for picking a task. If another algorithm
  * has to be executed, a different function must be provided and called
  */
 void round_robin_scheduler(){
@@ -147,17 +188,17 @@ void round_robin_scheduler(){
 void mariOS_scheduler(void)
 {
 	/** Retrieve the current active task*/
-	marios_curr_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task];
+	mariOS_curr_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task];
 
 	/** If it is active, namely it has been set neither in wait nor suspend, its status must be changed in ready */
-	if(MARIOS_TASK_STATUS_ACTIVE == marios_curr_task->status)
-		marios_curr_task->status = MARIOS_TASK_STATUS_READY;
+	if(MARIOS_TASK_STATUS_ACTIVE == mariOS_curr_task->status)
+		mariOS_curr_task->status = MARIOS_TASK_STATUS_READY;
 
 	/** Now, we need to pick the next task: */
 	round_robin_scheduler();
 
-	marios_next_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task];
-	marios_next_task->status = MARIOS_TASK_STATUS_ACTIVE;
+	mariOS_next_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task];
+	mariOS_next_task->status = MARIOS_TASK_STATUS_ACTIVE;
 }
 
 void mariOS_delay(uint32_t ticks){
