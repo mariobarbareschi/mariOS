@@ -26,5 +26,3 @@ For your comodity, check it out the docs folder: https://mariobarbareschi.github
 ### Contributing
 Github is for social coding.
 If you want to write code, I encourage contributions through pull requests from forks of this repository.
-
-[https://mariobarbareschi.github.io/mariOS/]
