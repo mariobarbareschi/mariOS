@@ -7,7 +7,7 @@
 
 mariOS
 =====
-mariOS Answers the Request for an Implementation of an OS
+mariOS Answers the Request for an Implementation of OS
 
 ---------
 ## About
