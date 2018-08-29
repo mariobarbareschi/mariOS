@@ -1,5 +1,5 @@
 
-![Banner](https://i.giphy.com/media/3o7aCUThCGBNwTEbkc/giphy.webp)
+![Banner](https://d.wattpad.com/story_parts/488157334/images/14f211bab33f56fc351331339007.gif)
 =====
 
 ![License](https://img.shields.io/badge/License-AGPL3.0-blue.svg)![Version](https://img.shields.io/badge/mariOS-V1-green.svg)
