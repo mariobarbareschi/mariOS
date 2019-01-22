@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">mariOS
-   &#160;<span id="projectnumber">0.1</span>
+   &#160;<span id="projectnumber">V1</span>
    </div>
    <div id="projectbrief">mariOS Answers the Request for an Implementation of an OS</div>
   </td>
@@ -78,21 +78,18 @@ $(function() {
 Include dependency graph for mariOS_config.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="mari_o_s__config_8h__incl.png" border="0" usemap="#include_2mari_o_s__config_8h" alt=""/></div>
-<map name="include_2mari_o_s__config_8h" id="include_2mari_o_s__config_8h">
-</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="mari_o_s__config_8h__dep__incl.png" border="0" usemap="#include_2mari_o_s__config_8hdep" alt=""/></div>
 <map name="include_2mari_o_s__config_8hdep" id="include_2mari_o_s__config_8hdep">
-<area shape="rect" id="node2" href="port_8c.html" title="Implementation file for function of port.h, in particular for supporting ARM Cortex M3/M4 uC..." alt="" coords="48,80,128,107"/>
-<area shape="rect" id="node3" href="mari_o_s_8h.html" title="Header file of main functionalities of mariOS. This file provides the mariOS task status enum..." alt="" coords="152,80,251,107"/>
-<area shape="rect" id="node5" href="queue_8h.html" title="Header file of mariOS queue. This file contains some enum definitions (namely mariOS_queue_status_t, mariOS_blocking_queue_op_t and mariOS_queue_op_status_t ), the queue structure, which is exploited by queue accessory functions. " alt="" coords="277,155,369,181"/>
-<area shape="rect" id="node4" href="mari_o_s_8c.html" title="Implementation file of main functionalities of mariOS. This file provides the system&#39;s tasks list str..." alt="" coords="5,155,101,181"/>
-<area shape="rect" id="node8" href="stm32f4xx__it_8c.html" title="Default Interrupt Service Routines. " alt="" coords="126,155,253,181"/>
-<area shape="rect" id="node6" href="queue_8c.html" title="Implementation file of mariOS queue. It just contains implementation of function declared in the corr..." alt="" coords="220,229,311,256"/>
-<area shape="rect" id="node7" href="main_8c.html" title="Default main function. " alt="" coords="335,229,427,256"/>
+<area shape="rect" id="node2" href="port_8c.html" title="Implementation file for function of port.h, in particular for supporting ARM Cortex M3/M4 uC..." alt="" coords="5,80,85,107"/>
+<area shape="rect" id="node3" href="mari_o_s_8h.html" title="Header file of main functionalities of mariOS. This file provides the mariOS task status enum..." alt="" coords="109,80,208,107"/>
+<area shape="rect" id="node5" href="queue_8h.html" title="Header file of mariOS queue. This file contains some enum definitions (namely mariOS_queue_status_t, mariOS_blocking_queue_op_t and mariOS_queue_op_status_t ), the queue structure, which is exploited by queue accessory functions. " alt="" coords="199,155,291,181"/>
+<area shape="rect" id="node4" href="mari_o_s_8c.html" title="Implementation file of main functionalities of mariOS. This file provides the system&#39;s tasks list str..." alt="" coords="79,155,175,181"/>
+<area shape="rect" id="node6" href="queue_8c.html" title="Implementation file of mariOS queue. It just contains implementation of function declared in the corr..." alt="" coords="143,229,233,256"/>
+<area shape="rect" id="node7" href="main_8c.html" title="Default main function. " alt="" coords="258,229,350,256"/>
 </map>
 </div>
 </div>
@@ -102,12 +99,20 @@ This graph shows which files directly or indirectly include this file:</div>
 Macros</h2></td></tr>
 <tr class="memitem:af930526d08eb3382941b13342f41bf10"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mari_o_s__config_8h.html#af930526d08eb3382941b13342f41bf10">MARIOS_CONFIG_MAX_TASKS</a>&#160;&#160;&#160;10</td></tr>
 <tr class="separator:af930526d08eb3382941b13342f41bf10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45e2400745e0b205f98367a07b17ad55"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mari_o_s__config_8h.html#a45e2400745e0b205f98367a07b17ad55">MARIOS_CONFIG_SYSTICK_DIV</a>&#160;&#160;&#160;1000</td></tr>
-<tr class="separator:a45e2400745e0b205f98367a07b17ad55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0aabd4d7a2206313488b461eca061dd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mari_o_s__config_8h.html#ab0aabd4d7a2206313488b461eca061dd">MARIOS_CONFIG_SYSTICK_FREQ</a>&#160;&#160;&#160;HAL_RCC_GetHCLKFreq()/<a class="el" href="mari_o_s__config_8h.html#a8f4745ef0e323da8f0ff381d84f06f3e">MARIOS_CONFIG_SYSTICK_FREQ_DIV</a></td></tr>
+<tr class="separator:ab0aabd4d7a2206313488b461eca061dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f4745ef0e323da8f0ff381d84f06f3e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mari_o_s__config_8h.html#a8f4745ef0e323da8f0ff381d84f06f3e">MARIOS_CONFIG_SYSTICK_FREQ_DIV</a>&#160;&#160;&#160;10000</td></tr>
+<tr class="separator:a8f4745ef0e323da8f0ff381d84f06f3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c8ffa0255073072ced0b7b6ea49af74"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mari_o_s__config_8h.html#a9c8ffa0255073072ced0b7b6ea49af74">MARIOS_CONFIG_MAX_TASK_ACTIVE_TICKS</a>&#160;&#160;&#160;10</td></tr>
+<tr class="separator:a9c8ffa0255073072ced0b7b6ea49af74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51fe4db32a22ed712a0ff977b2f08dbd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mari_o_s__config_8h.html#a51fe4db32a22ed712a0ff977b2f08dbd">MARIOS_IDLE_TASK_STACK</a>&#160;&#160;&#160;40</td></tr>
 <tr class="separator:a51fe4db32a22ed712a0ff977b2f08dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad837efe163e90a0db9f2ddb5a01c63a3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mari_o_s__config_8h.html#ad837efe163e90a0db9f2ddb5a01c63a3">MARIOS_MINIMUM_TASK_STACK_SIZE</a>&#160;&#160;&#160;<a class="el" href="mari_o_s__config_8h.html#a51fe4db32a22ed712a0ff977b2f08dbd">MARIOS_IDLE_TASK_STACK</a></td></tr>
 <tr class="separator:ad837efe163e90a0db9f2ddb5a01c63a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67fec9c24bb04cb745006de093b9bd62"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mari_o_s__config_8h.html#a67fec9c24bb04cb745006de093b9bd62">MARIOS_MAXIMUM_PRIORITY</a>&#160;&#160;&#160;100</td></tr>
+<tr class="separator:a67fec9c24bb04cb745006de093b9bd62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a298b1881468fec7e1b8f11f9c584d6d8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mari_o_s__config_8h.html#a298b1881468fec7e1b8f11f9c584d6d8">MARIOS_SCHEDULER_FUNCTION</a>&#160;&#160;&#160;<a class="el" href="mari_o_s_8c.html#ad84c0c0c30d720a7a39b816969d686a3">priority_scheduler</a></td></tr>
+<tr class="separator:a298b1881468fec7e1b8f11f9c584d6d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file contains definitions and macros intended to configure and modify some static parameters of mariOS code. </p>
@@ -120,6 +125,20 @@ Macros</h2></td></tr>
 <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.</p>
 <p>You should have received a copy of the GNU Affero General Public License along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a9c8ffa0255073072ced0b7b6ea49af74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c8ffa0255073072ced0b7b6ea49af74">&#9670;&nbsp;</a></span>MARIOS_CONFIG_MAX_TASK_ACTIVE_TICKS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MARIOS_CONFIG_MAX_TASK_ACTIVE_TICKS&#160;&#160;&#160;10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="af930526d08eb3382941b13342f41bf10"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af930526d08eb3382941b13342f41bf10">&#9670;&nbsp;</a></span>MARIOS_CONFIG_MAX_TASKS</h2>
 
@@ -134,14 +153,28 @@ Macros</h2></td></tr>
 
 </div>
 </div>
-<a id="a45e2400745e0b205f98367a07b17ad55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45e2400745e0b205f98367a07b17ad55">&#9670;&nbsp;</a></span>MARIOS_CONFIG_SYSTICK_DIV</h2>
+<a id="ab0aabd4d7a2206313488b461eca061dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0aabd4d7a2206313488b461eca061dd">&#9670;&nbsp;</a></span>MARIOS_CONFIG_SYSTICK_FREQ</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MARIOS_CONFIG_SYSTICK_DIV&#160;&#160;&#160;1000</td>
+          <td class="memname">#define MARIOS_CONFIG_SYSTICK_FREQ&#160;&#160;&#160;HAL_RCC_GetHCLKFreq()/<a class="el" href="mari_o_s__config_8h.html#a8f4745ef0e323da8f0ff381d84f06f3e">MARIOS_CONFIG_SYSTICK_FREQ_DIV</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8f4745ef0e323da8f0ff381d84f06f3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f4745ef0e323da8f0ff381d84f06f3e">&#9670;&nbsp;</a></span>MARIOS_CONFIG_SYSTICK_FREQ_DIV</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MARIOS_CONFIG_SYSTICK_FREQ_DIV&#160;&#160;&#160;10000</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -162,6 +195,20 @@ Macros</h2></td></tr>
 
 </div>
 </div>
+<a id="a67fec9c24bb04cb745006de093b9bd62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67fec9c24bb04cb745006de093b9bd62">&#9670;&nbsp;</a></span>MARIOS_MAXIMUM_PRIORITY</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MARIOS_MAXIMUM_PRIORITY&#160;&#160;&#160;100</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ad837efe163e90a0db9f2ddb5a01c63a3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad837efe163e90a0db9f2ddb5a01c63a3">&#9670;&nbsp;</a></span>MARIOS_MINIMUM_TASK_STACK_SIZE</h2>
 
@@ -176,10 +223,24 @@ Macros</h2></td></tr>
 
 </div>
 </div>
+<a id="a298b1881468fec7e1b8f11f9c584d6d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a298b1881468fec7e1b8f11f9c584d6d8">&#9670;&nbsp;</a></span>MARIOS_SCHEDULER_FUNCTION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MARIOS_SCHEDULER_FUNCTION&#160;&#160;&#160;<a class="el" href="mari_o_s_8c.html#ad84c0c0c30d720a7a39b816969d686a3">priority_scheduler</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 11 2018 15:06:15 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jan 22 2019 16:58:31 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

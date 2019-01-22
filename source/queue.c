@@ -42,7 +42,7 @@ mariOS_queue* createQueue(unsigned int size)
 	return queue;
 }
 
-mariOS_queue_op_status_t enqueue(mariOS_queue* queue, int8_t* msg, unsigned int msg_size, mariOS_blocking_queue_op_t blocking)
+mariOS_queue_op_status_t enqueue(mariOS_queue* queue, uint8_t* msg, unsigned int msg_size, mariOS_blocking_queue_op_t blocking)
 {
 	int writtenFlag = 0;
 	while(0 == writtenFlag) //This flag will be set once the writing is achieved
@@ -127,7 +127,7 @@ mariOS_queue_op_status_t enqueue(mariOS_queue* queue, int8_t* msg, unsigned int 
 	return MARIOS_QUEUE_SUCCESS_OP;
 }
 
-mariOS_queue_op_status_t dequeue(mariOS_queue* queue, int8_t* msg, unsigned int msg_size, mariOS_blocking_queue_op_t blocking)
+mariOS_queue_op_status_t dequeue(mariOS_queue* queue, uint8_t* msg, unsigned int msg_size, mariOS_blocking_queue_op_t blocking)
 {
 	int receivedFlag = 0;
 	while(0 == receivedFlag) //This flag will be set once the writing is achieved
@@ -153,7 +153,7 @@ mariOS_queue_op_status_t dequeue(mariOS_queue* queue, int8_t* msg, unsigned int 
 						* the queue is empty (::MARIOS_QUEUE_EMPTY_OP). Before returning, we must exit from the critical
 						* section as well as we must unlock the reading operations on the queue
 					    */
-						queue->wLock = MARIOS_QUEUE_UNLOCKED;
+						queue->rLock = MARIOS_QUEUE_UNLOCKED;
 						exit_critical_sction();
 						return MARIOS_QUEUE_EMPTY_OP;
 					}

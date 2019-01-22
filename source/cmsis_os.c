@@ -6,7 +6,7 @@ osStatus osKernelInitialize (void){
 
 osStatus osKernelStart (void)
 {
-  mariOS_start(MARIOS_CONFIG_SYSTICK_DIV);
+  mariOS_start(MARIOS_CONFIG_SYSTICK_FREQ);
   return osOK;
 }
 
@@ -17,7 +17,7 @@ uint32_t osKernelSysTick(void)
 
 osThreadId osThreadCreate (const osThreadDef_t *thread_def, void *argument)
 {
-	return mariOS_task_init(thread_def->pthread, thread_def->stacksize);
+	return mariOS_task_init(thread_def->pthread, thread_def->stacksize, thread_def->priority, thread_def->period);
   
 }
 
@@ -50,7 +50,7 @@ osPriority osThreadGetPriority (osThreadId thread_id)
 
 osStatus osDelay (uint32_t millisec)
 {
-	mariOS_delay(MARIOS_CONFIG_SYSTICK_DIV/1000*millisec);
+	mariOS_delay(millisec);
 	return osOK;
 }
 

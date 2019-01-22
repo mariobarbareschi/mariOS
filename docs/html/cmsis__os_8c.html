@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">mariOS
-   &#160;<span id="projectnumber">0.1</span>
+   &#160;<span id="projectnumber">V1</span>
    </div>
    <div id="projectbrief">mariOS Answers the Request for an Implementation of an OS</div>
   </td>
@@ -117,16 +117,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="mari_o_s__config_8h.html#a45e2400745e0b205f98367a07b17ad55">MARIOS_CONFIG_SYSTICK_DIV</a>, and <a class="el" href="mari_o_s_8c.html#a8027dcd13880c2971f3627b052b481b3">mariOS_delay()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <a class="code" href="mari_o_s_8c.html#a8027dcd13880c2971f3627b052b481b3">mariOS_delay</a>(<a class="code" href="mari_o_s__config_8h.html#a45e2400745e0b205f98367a07b17ad55">MARIOS_CONFIG_SYSTICK_DIV</a>/1000*millisec);</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">return</span> osOK;</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div><div class="ttc" id="mari_o_s_8c_html_a8027dcd13880c2971f3627b052b481b3"><div class="ttname"><a href="mari_o_s_8c.html#a8027dcd13880c2971f3627b052b481b3">mariOS_delay</a></div><div class="ttdeci">void mariOS_delay(uint32_t ticks)</div><div class="ttdoc">This function allows to switch the task status from MARIOS_TASK_STATUS_ACTIVE to the MARIOS_TASK_STAT...</div><div class="ttdef"><b>Definition:</b> mariOS.c:204</div></div>
-<div class="ttc" id="mari_o_s__config_8h_html_a45e2400745e0b205f98367a07b17ad55"><div class="ttname"><a href="mari_o_s__config_8h.html#a45e2400745e0b205f98367a07b17ad55">MARIOS_CONFIG_SYSTICK_DIV</a></div><div class="ttdeci">#define MARIOS_CONFIG_SYSTICK_DIV</div><div class="ttdef"><b>Definition:</b> mariOS_config.h:37</div></div>
+<p class="reference">References <a class="el" href="mari_o_s_8c.html#a9c401697a65239a5eb970fcfedff9a7a">mariOS_delay()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <a class="code" href="mari_o_s_8c.html#a9c401697a65239a5eb970fcfedff9a7a">mariOS_delay</a>(millisec);</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">return</span> osOK;</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;}</div><div class="ttc" id="mari_o_s_8c_html_a9c401697a65239a5eb970fcfedff9a7a"><div class="ttname"><a href="mari_o_s_8c.html#a9c401697a65239a5eb970fcfedff9a7a">mariOS_delay</a></div><div class="ttdeci">void mariOS_delay(uint32_t millisec)</div><div class="ttdoc">This function allows to switch the task status from MARIOS_TASK_STATUS_ACTIVE to the MARIOS_TASK_STAT...</div><div class="ttdef"><b>Definition:</b> mariOS.c:262</div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="cmsis__os_8c_a02e19d5e723bfb06ba9324d625162255_cgraph.png" border="0" usemap="#cmsis__os_8c_a02e19d5e723bfb06ba9324d625162255_cgraph" alt=""/></div>
 <map name="cmsis__os_8c_a02e19d5e723bfb06ba9324d625162255_cgraph" id="cmsis__os_8c_a02e19d5e723bfb06ba9324d625162255_cgraph">
-<area shape="rect" id="node2" href="mari_o_s_8c.html#a8027dcd13880c2971f3627b052b481b3" title="This function allows to switch the task status from MARIOS_TASK_STATUS_ACTIVE to the MARIOS_TASK_STAT..." alt="" coords="112,5,197,32"/>
-<area shape="rect" id="node3" href="port_8c.html#a22857ed9823f022f5988f9afdbb8994e" title="The function enter_critical_section must guarantee that no other task can access shared resources of ..." alt="" coords="245,5,361,32"/>
+<area shape="rect" id="node2" href="mari_o_s_8c.html#a9c401697a65239a5eb970fcfedff9a7a" title="This function allows to switch the task status from MARIOS_TASK_STATUS_ACTIVE to the MARIOS_TASK_STAT..." alt="" coords="112,5,197,32"/>
+<area shape="rect" id="node3" href="mari_o_s_8c.html#a711b8b2784a0430552465a537d24ef8a" title="mariOS_active_after" alt="" coords="245,5,359,32"/>
+<area shape="rect" id="node4" href="port_8c.html#a22857ed9823f022f5988f9afdbb8994e" title="The function enter_critical_section must guarantee that no other task can access shared resources of ..." alt="" coords="407,5,523,32"/>
 </map>
 </div>
 
@@ -149,7 +149,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p class="reference">References <a class="el" href="mari_o_s_8c.html#a145925a06d731acd607bed860d7d57e2">mariOS_init()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;                                  {</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;        <a class="code" href="mari_o_s_8c.html#a145925a06d731acd607bed860d7d57e2">mariOS_init</a>();</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;}</div><div class="ttc" id="mari_o_s_8c_html_a145925a06d731acd607bed860d7d57e2"><div class="ttname"><a href="mari_o_s_8c.html#a145925a06d731acd607bed860d7d57e2">mariOS_init</a></div><div class="ttdeci">void mariOS_init(void)</div><div class="ttdoc">This function initialize the mariOS_tasks_list struct and populate it with the first task of the syst...</div><div class="ttdef"><b>Definition:</b> mariOS.c:90</div></div>
+<div class="fragment"><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;                                  {</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;        <a class="code" href="mari_o_s_8c.html#a145925a06d731acd607bed860d7d57e2">mariOS_init</a>();</div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;}</div><div class="ttc" id="mari_o_s_8c_html_a145925a06d731acd607bed860d7d57e2"><div class="ttname"><a href="mari_o_s_8c.html#a145925a06d731acd607bed860d7d57e2">mariOS_init</a></div><div class="ttdeci">void mariOS_init(void)</div><div class="ttdoc">This function initialize the mariOS_tasks_list struct and populate it with the first task of the syst...</div><div class="ttdef"><b>Definition:</b> mariOS.c:106</div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -177,9 +177,9 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="mari_o_s__config_8h.html#a45e2400745e0b205f98367a07b17ad55">MARIOS_CONFIG_SYSTICK_DIV</a>, and <a class="el" href="mari_o_s_8c.html#a74fd826d4eb7eee7307361c3c9a8a404">mariOS_start()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  <a class="code" href="mari_o_s_8c.html#a74fd826d4eb7eee7307361c3c9a8a404">mariOS_start</a>(<a class="code" href="mari_o_s__config_8h.html#a45e2400745e0b205f98367a07b17ad55">MARIOS_CONFIG_SYSTICK_DIV</a>);</div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <span class="keywordflow">return</span> osOK;</div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;}</div><div class="ttc" id="mari_o_s_8c_html_a74fd826d4eb7eee7307361c3c9a8a404"><div class="ttname"><a href="mari_o_s_8c.html#a74fd826d4eb7eee7307361c3c9a8a404">mariOS_start</a></div><div class="ttdeci">int mariOS_start(uint32_t systick_ticks)</div><div class="ttdoc">This function makes mariOS started, meant that the system&amp;#39;s timer has to\ be configured accordingly t...</div><div class="ttdef"><b>Definition:</b> mariOS.c:131</div></div>
-<div class="ttc" id="mari_o_s__config_8h_html_a45e2400745e0b205f98367a07b17ad55"><div class="ttname"><a href="mari_o_s__config_8h.html#a45e2400745e0b205f98367a07b17ad55">MARIOS_CONFIG_SYSTICK_DIV</a></div><div class="ttdeci">#define MARIOS_CONFIG_SYSTICK_DIV</div><div class="ttdef"><b>Definition:</b> mariOS_config.h:37</div></div>
+<p class="reference">References <a class="el" href="mari_o_s__config_8h.html#ab0aabd4d7a2206313488b461eca061dd">MARIOS_CONFIG_SYSTICK_FREQ</a>, and <a class="el" href="mari_o_s_8c.html#a74fd826d4eb7eee7307361c3c9a8a404">mariOS_start()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;  <a class="code" href="mari_o_s_8c.html#a74fd826d4eb7eee7307361c3c9a8a404">mariOS_start</a>(<a class="code" href="mari_o_s__config_8h.html#ab0aabd4d7a2206313488b461eca061dd">MARIOS_CONFIG_SYSTICK_FREQ</a>);</div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <span class="keywordflow">return</span> osOK;</div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;}</div><div class="ttc" id="mari_o_s_8c_html_a74fd826d4eb7eee7307361c3c9a8a404"><div class="ttname"><a href="mari_o_s_8c.html#a74fd826d4eb7eee7307361c3c9a8a404">mariOS_start</a></div><div class="ttdeci">int mariOS_start(uint32_t systick_ticks)</div><div class="ttdoc">This function makes mariOS started, meant that the system&amp;#39;s timer has to\ be configured accordingly t...</div><div class="ttdef"><b>Definition:</b> mariOS.c:149</div></div>
+<div class="ttc" id="mari_o_s__config_8h_html_ab0aabd4d7a2206313488b461eca061dd"><div class="ttname"><a href="mari_o_s__config_8h.html#ab0aabd4d7a2206313488b461eca061dd">MARIOS_CONFIG_SYSTICK_FREQ</a></div><div class="ttdeci">#define MARIOS_CONFIG_SYSTICK_FREQ</div><div class="ttdef"><b>Definition:</b> mariOS_config.h:37</div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -209,7 +209,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p class="reference">References <a class="el" href="mari_o_s_8c.html#a844a5d7dc246edfdb42ca178da349970">marios_systick_handler()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <a class="code" href="mari_o_s_8c.html#a844a5d7dc246edfdb42ca178da349970">marios_systick_handler</a>();</div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;}</div><div class="ttc" id="mari_o_s_8c_html_a844a5d7dc246edfdb42ca178da349970"><div class="ttname"><a href="mari_o_s_8c.html#a844a5d7dc246edfdb42ca178da349970">marios_systick_handler</a></div><div class="ttdeci">void marios_systick_handler(void)</div><div class="ttdef"><b>Definition:</b> mariOS.c:143</div></div>
+<div class="fragment"><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <a class="code" href="mari_o_s_8c.html#a844a5d7dc246edfdb42ca178da349970">marios_systick_handler</a>();</div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;}</div><div class="ttc" id="mari_o_s_8c_html_a844a5d7dc246edfdb42ca178da349970"><div class="ttname"><a href="mari_o_s_8c.html#a844a5d7dc246edfdb42ca178da349970">marios_systick_handler</a></div><div class="ttdeci">void marios_systick_handler(void)</div><div class="ttdef"><b>Definition:</b> mariOS.c:161</div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -247,14 +247,14 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">References <a class="el" href="mari_o_s_8c.html#af84cc3fb915d6a38431cce3e3fd20a93">mariOS_task_init()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="mari_o_s_8c.html#af84cc3fb915d6a38431cce3e3fd20a93">mariOS_task_init</a>(thread_def-&gt;pthread, thread_def-&gt;stacksize);</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  </div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;}</div><div class="ttc" id="mari_o_s_8c_html_af84cc3fb915d6a38431cce3e3fd20a93"><div class="ttname"><a href="mari_o_s_8c.html#af84cc3fb915d6a38431cce3e3fd20a93">mariOS_task_init</a></div><div class="ttdeci">mariOS_task_id_t mariOS_task_init(void(*handler)(void), uint32_t stack_size)</div><div class="ttdoc">This function initialize a new entry in the tasks list. Actually, mariOS defines a task as a C functi...</div><div class="ttdef"><b>Definition:</b> mariOS.c:101</div></div>
+<p class="reference">References <a class="el" href="mari_o_s_8c.html#a6424fee0e9b0f7e092556e8d00770052">mariOS_task_init()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="mari_o_s_8c.html#a6424fee0e9b0f7e092556e8d00770052">mariOS_task_init</a>(thread_def-&gt;pthread, thread_def-&gt;stacksize, thread_def-&gt;priority, thread_def-&gt;period);</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  </div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;}</div><div class="ttc" id="mari_o_s_8c_html_a6424fee0e9b0f7e092556e8d00770052"><div class="ttname"><a href="mari_o_s_8c.html#a6424fee0e9b0f7e092556e8d00770052">mariOS_task_init</a></div><div class="ttdeci">mariOS_task_id_t mariOS_task_init(void(*handler)(void), uint32_t stack_size, mariOS_priority priority, uint32_t period)</div><div class="ttdoc">This function initialize a new entry in the tasks list. Actually, mariOS defines a task as a C functi...</div><div class="ttdef"><b>Definition:</b> mariOS.c:117</div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="cmsis__os_8c_ac59b5713cb083702dce759c73fd90dff_cgraph.png" border="0" usemap="#cmsis__os_8c_ac59b5713cb083702dce759c73fd90dff_cgraph" alt=""/></div>
 <map name="cmsis__os_8c_ac59b5713cb083702dce759c73fd90dff_cgraph" id="cmsis__os_8c_ac59b5713cb083702dce759c73fd90dff_cgraph">
-<area shape="rect" id="node2" href="mari_o_s_8c.html#af84cc3fb915d6a38431cce3e3fd20a93" title="This function initialize a new entry in the tasks list. Actually, mariOS defines a task as a C functi..." alt="" coords="148,5,247,32"/>
+<area shape="rect" id="node2" href="mari_o_s_8c.html#a6424fee0e9b0f7e092556e8d00770052" title="This function initialize a new entry in the tasks list. Actually, mariOS defines a task as a C functi..." alt="" coords="148,5,247,32"/>
 </map>
 </div>
 
@@ -359,7 +359,7 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p class="reference">References <a class="el" href="mari_o_s_8c.html#aa1ce5071a73faddfee5255c059bcde9f">mariOS_task_yield()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <a class="code" href="mari_o_s_8c.html#aa1ce5071a73faddfee5255c059bcde9f">mariOS_task_yield</a>();</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordflow">return</span> osOK;</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div><div class="ttc" id="mari_o_s_8c_html_aa1ce5071a73faddfee5255c059bcde9f"><div class="ttname"><a href="mari_o_s_8c.html#aa1ce5071a73faddfee5255c059bcde9f">mariOS_task_yield</a></div><div class="ttdeci">void mariOS_task_yield(void)</div><div class="ttdoc">This function implements the task yield, hence it gives to a task the possibility of a self-preemptio...</div><div class="ttdef"><b>Definition:</b> mariOS.c:159</div></div>
+<div class="fragment"><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <a class="code" href="mari_o_s_8c.html#aa1ce5071a73faddfee5255c059bcde9f">mariOS_task_yield</a>();</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keywordflow">return</span> osOK;</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;}</div><div class="ttc" id="mari_o_s_8c_html_aa1ce5071a73faddfee5255c059bcde9f"><div class="ttname"><a href="mari_o_s_8c.html#aa1ce5071a73faddfee5255c059bcde9f">mariOS_task_yield</a></div><div class="ttdeci">void mariOS_task_yield(void)</div><div class="ttdoc">This function implements the task yield, hence it gives to a task the possibility of a self-preemptio...</div><div class="ttdef"><b>Definition:</b> mariOS.c:177</div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -376,7 +376,7 @@ Here is the call graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 11 2018 15:06:15 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jan 22 2019 16:58:32 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

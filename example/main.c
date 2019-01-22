@@ -21,9 +21,9 @@ static void task3_handler(void);
 static void task4_handler(void);
 static void task5_handler(void);
 
-static marios_queue* queueMsgt4_t5;
-static marios_queue* queueMsgt1_t2;
-static marios_queue* queueMsgt2_t3;
+static mariOS_queue* queueMsgt4_t5;
+static mariOS_queue* queueMsgt1_t2;
+static mariOS_queue* queueMsgt2_t3;
 
 int main(void)
 {
@@ -36,20 +36,20 @@ int main(void)
 	BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_GPIO);
 
 	osKernelInitialize();
-	osThreadDef_t task1 = {task1_handler, 40};
-	osThreadDef_t task2 = {task2_handler, 40};
-	osThreadDef_t task3 = {task3_handler, 40};
-	osThreadDef_t task4 = {task4_handler, 40};
-	osThreadDef_t task5 = {task5_handler, 40};
+	osThreadDef_t task1 = {task1_handler, 40, 4, 500};
+	osThreadDef_t task2 = {task2_handler, 40, 3, 500};
+	osThreadDef_t task3 = {task3_handler, 40, 2, 500};
+	osThreadDef_t task4 = {task4_handler, 40, 99, 50};
+	osThreadDef_t task5 = {task5_handler, 40, 1, 50};
 	osThreadCreate(&task1, NULL);
 	osThreadCreate(&task2, NULL);
 	osThreadCreate(&task3, NULL);
 	osThreadCreate(&task4, NULL);
 	osThreadCreate(&task5, NULL);
 
-	queueMsgt1_t2 = createQueue(sizeof(uint32_t));
-	queueMsgt2_t3 = createQueue(sizeof(uint32_t));
-	queueMsgt4_t5 = createQueue(sizeof(uint32_t)*2);
+	queueMsgt1_t2 = createQueue(sizeof(uint32_t)*10);
+	queueMsgt2_t3 = createQueue(sizeof(uint32_t)*10);
+	queueMsgt4_t5 = createQueue(sizeof(uint32_t)*10);
 
 	BSP_LED_Off(LED3);
 
@@ -63,79 +63,83 @@ int main(void)
 	for(;;);
 }
 
-static void task1_handler(void)
+mariOS_Task(task1_handler)
 {
 	uint32_t outcoming_msg = 1;
-	int cycle = 0;
-	int direction = 1;
-	while (1)
+	mariOS_begin_periodic
 	{
 		BSP_LED_Toggle(LED4);
 		outcoming_msg = 1-outcoming_msg;
-		enqueue(queueMsgt1_t2, (uint8_t*)&outcoming_msg, sizeof(uint32_t), MARIOS_BLOCKING_QUEUE_OP);
-		cycle+=direction;
-		if(100 == cycle) direction = -1;
-		else if(0 == cycle) direction = 1;
-		osDelay(cycle);
+		enqueue(queueMsgt1_t2, (uint8_t*)&outcoming_msg, sizeof(uint32_t), MARIOS_NONBLOCKING_QUEUE_OP);
 	}
+	mariOS_end_periodic;
 }
 
-static void task2_handler(void)
+mariOS_Task(task2_handler)
 {
 	uint32_t incoming_msg;
 	uint32_t outcoming_msg = 1;
-	while (1)
+	mariOS_begin_periodic
 	{
-		dequeue(queueMsgt1_t2, (uint8_t*)&incoming_msg, sizeof(uint32_t), MARIOS_BLOCKING_QUEUE_OP);
-		if(incoming_msg == 1)
+		mariOS_queue_op_status_t status = dequeue(
+											queueMsgt1_t2,
+											(uint8_t*)&incoming_msg,
+											sizeof(uint32_t),
+											MARIOS_NONBLOCKING_QUEUE_OP);
+		if(MARIOS_QUEUE_SUCCESS_OP == status && incoming_msg == 1)
 		{
 			BSP_LED_Toggle(LED5);
 			outcoming_msg = 1-outcoming_msg;
-			enqueue(queueMsgt2_t3, (uint8_t*)&outcoming_msg, sizeof(uint32_t), MARIOS_BLOCKING_QUEUE_OP);
+			enqueue(queueMsgt2_t3, (uint8_t*)&outcoming_msg, sizeof(uint32_t), MARIOS_NONBLOCKING_QUEUE_OP);
 		}
 	}
+	mariOS_end_periodic;
 }
 
-static void task3_handler(void)
+mariOS_Task(task3_handler)
 {
 	uint32_t incoming_msg;
-	while (1)
+	mariOS_begin_periodic
 	{
-		dequeue(queueMsgt2_t3, (uint8_t*)&incoming_msg, sizeof(uint32_t), MARIOS_BLOCKING_QUEUE_OP);
-		if(incoming_msg == 1)
-			BSP_LED_Toggle(LED6);
+		mariOS_queue_op_status_t status = dequeue(
+										    queueMsgt2_t3,
+											(uint8_t*)&incoming_msg,
+											sizeof(uint32_t),
+											MARIOS_NONBLOCKING_QUEUE_OP);
+		if(MARIOS_QUEUE_SUCCESS_OP == status && incoming_msg == 1)
+		BSP_LED_Toggle(LED6);
 	}
+	mariOS_end_periodic;
 }
 
-static void task4_handler(void)
+mariOS_Task(task4_handler)
 {
 	uint32_t msg = 0;
-	while (1)
+	mariOS_begin_periodic
 	{
 		if(GPIO_PIN_SET == BSP_PB_GetState(BUTTON_KEY))
 		{
 			msg = 1-msg;
 			while(MARIOS_QUEUE_SUCCESS_OP != enqueue(queueMsgt4_t5, (uint8_t*) & msg, sizeof(uint32_t), MARIOS_NONBLOCKING_QUEUE_OP))
-				osDelay(1000);
+				osDelay(50);
 			while(GPIO_PIN_SET == BSP_PB_GetState(BUTTON_KEY));
 		}
-		osDelay(100);
 	}
+	mariOS_end_periodic;
 }
 
-static void task5_handler(void)
+mariOS_Task(task5_handler)
 {
 	uint32_t msg;
-	while (1)
+	mariOS_begin_periodic
 	{
-		dequeue(queueMsgt4_t5, (uint8_t*) & msg, sizeof(uint32_t), MARIOS_BLOCKING_QUEUE_OP);
+		dequeue(queueMsgt4_t5, (uint8_t*) & msg, sizeof(uint32_t), MARIOS_NONBLOCKING_QUEUE_OP);
 		if(msg == 1)
 			BSP_LED_On(LED3);
 		else
 			BSP_LED_Off(LED3);
-
-		osDelay(1000);
 	}
+	mariOS_end_periodic;
 }
 
 void Error_Handler()

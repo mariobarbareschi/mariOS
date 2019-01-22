@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">mariOS
-   &#160;<span id="projectnumber">0.1</span>
+   &#160;<span id="projectnumber">V1</span>
    </div>
    <div id="projectbrief">mariOS Answers the Request for an Implementation of an OS</div>
   </td>
@@ -103,16 +103,16 @@ $(function() {
 : <a class="el" href="stm32f4xx__it_8h.html#adbdfb05858cc36fc520974df37ec3cb0">stm32f4xx_it.h</a>
 </li>
 <li>dequeue()
-: <a class="el" href="queue_8h.html#a28d45eca570534d74c9e148f9d26fe99">queue.h</a>
-, <a class="el" href="queue_8c.html#a0e97fa79cc3ad6c2235d99e99ef107ec">queue.c</a>
+: <a class="el" href="queue_8h.html#a5e5c21d80c074a62981ac6a56d393a03">queue.h</a>
+, <a class="el" href="queue_8c.html#a0cef5adfe08d8b560f04d8fc35f7435d">queue.c</a>
 </li>
 </ul>
 
 
 <h3><a id="index_e"></a>- e -</h3><ul>
 <li>enqueue()
-: <a class="el" href="queue_8c.html#a840bf7d51dbc4a52e7cfd3234c2475f1">queue.c</a>
-, <a class="el" href="queue_8h.html#ad9d276ceb282ab1c8fb136f9c6374421">queue.h</a>
+: <a class="el" href="queue_8c.html#af2600ea86aed58f7522e21f26bf4bbf2">queue.c</a>
+, <a class="el" href="queue_8h.html#a25ba5ba80e3c68888396d272f5610c3f">queue.h</a>
 </li>
 <li>enter_critical_section()
 : <a class="el" href="port_8h.html#a22857ed9823f022f5988f9afdbb8994e">port.h</a>
@@ -133,9 +133,17 @@ $(function() {
 : <a class="el" href="mari_o_s_8c.html#a203ea856aabbfe98ca3f54e1ce235ed5">mariOS.c</a>
 , <a class="el" href="mari_o_s_8h.html#a203ea856aabbfe98ca3f54e1ce235ed5">mariOS.h</a>
 </li>
+<li>get_current_task_period()
+: <a class="el" href="mari_o_s_8h.html#a2d4e0157eed613903bec74697a98b717">mariOS.h</a>
+, <a class="el" href="mari_o_s_8c.html#a2d4e0157eed613903bec74697a98b717">mariOS.c</a>
+</li>
 <li>get_current_task_status()
-: <a class="el" href="mari_o_s_8h.html#a72e631d3a2ed9e11836f0f1149ba65b2">mariOS.h</a>
-, <a class="el" href="mari_o_s_8c.html#a72e631d3a2ed9e11836f0f1149ba65b2">mariOS.c</a>
+: <a class="el" href="mari_o_s_8c.html#a72e631d3a2ed9e11836f0f1149ba65b2">mariOS.c</a>
+, <a class="el" href="mari_o_s_8h.html#a72e631d3a2ed9e11836f0f1149ba65b2">mariOS.h</a>
+</li>
+<li>get_idle_percentage()
+: <a class="el" href="mari_o_s_8c.html#aec5d00cc037e0a900dc097f8065b4d01">mariOS.c</a>
+, <a class="el" href="mari_o_s_8h.html#aec5d00cc037e0a900dc097f8065b4d01">mariOS.h</a>
 </li>
 <li>get_task_status()
 : <a class="el" href="mari_o_s_8h.html#a228860664d47f77e7b5b7195b0242021">mariOS.h</a>
@@ -169,31 +177,52 @@ $(function() {
 <li>main()
 : <a class="el" href="main_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main.c</a>
 </li>
+<li>mariOS_active_after()
+: <a class="el" href="mari_o_s_8c.html#a711b8b2784a0430552465a537d24ef8a">mariOS.c</a>
+</li>
+<li>mariOS_begin_periodic
+: <a class="el" href="mari_o_s_8h.html#a53195ca22b94707d321f2166efbbe986">mariOS.h</a>
+</li>
 <li>MARIOS_BLOCKING_QUEUE_OP
 : <a class="el" href="queue_8h.html#ae9a509b7a9a7c776d31c2e84252e553fa7acf364e5312f230d838e5558e7e9d23">queue.h</a>
 </li>
 <li>mariOS_blocking_queue_op_t
 : <a class="el" href="queue_8h.html#ae9a509b7a9a7c776d31c2e84252e553f">queue.h</a>
 </li>
+<li>MARIOS_CONFIG_MAX_TASK_ACTIVE_TICKS
+: <a class="el" href="mari_o_s__config_8h.html#a9c8ffa0255073072ced0b7b6ea49af74">mariOS_config.h</a>
+</li>
 <li>MARIOS_CONFIG_MAX_TASKS
 : <a class="el" href="mari_o_s__config_8h.html#af930526d08eb3382941b13342f41bf10">mariOS_config.h</a>
 </li>
-<li>MARIOS_CONFIG_SYSTICK_DIV
-: <a class="el" href="mari_o_s__config_8h.html#a45e2400745e0b205f98367a07b17ad55">mariOS_config.h</a>
+<li>MARIOS_CONFIG_SYSTICK_FREQ
+: <a class="el" href="mari_o_s__config_8h.html#ab0aabd4d7a2206313488b461eca061dd">mariOS_config.h</a>
+</li>
+<li>MARIOS_CONFIG_SYSTICK_FREQ_DIV
+: <a class="el" href="mari_o_s__config_8h.html#a8f4745ef0e323da8f0ff381d84f06f3e">mariOS_config.h</a>
 </li>
 <li>mariOS_curr_task
 : <a class="el" href="mari_o_s_8c.html#a456302edfb33428bf0790e4a5f3de535">mariOS.c</a>
 </li>
 <li>mariOS_delay()
-: <a class="el" href="mari_o_s_8h.html#a8027dcd13880c2971f3627b052b481b3">mariOS.h</a>
-, <a class="el" href="mari_o_s_8c.html#a8027dcd13880c2971f3627b052b481b3">mariOS.c</a>
+: <a class="el" href="mari_o_s_8c.html#a9c401697a65239a5eb970fcfedff9a7a">mariOS.c</a>
+, <a class="el" href="mari_o_s_8h.html#a8027dcd13880c2971f3627b052b481b3">mariOS.h</a>
+</li>
+<li>mariOS_end_periodic
+: <a class="el" href="mari_o_s_8h.html#ac9293d2ff598bc63c61d7003d7f1282e">mariOS.h</a>
 </li>
 <li>MARIOS_IDLE_TASK_STACK
 : <a class="el" href="mari_o_s__config_8h.html#a51fe4db32a22ed712a0ff977b2f08dbd">mariOS_config.h</a>
 </li>
+<li>marios_idle_value
+: <a class="el" href="mari_o_s_8c.html#a8a20b6886667469c4f71052a10f8389f">mariOS.c</a>
+</li>
 <li>mariOS_init()
 : <a class="el" href="mari_o_s_8c.html#a145925a06d731acd607bed860d7d57e2">mariOS.c</a>
 , <a class="el" href="mari_o_s_8h.html#a145925a06d731acd607bed860d7d57e2">mariOS.h</a>
+</li>
+<li>MARIOS_MAXIMUM_PRIORITY
+: <a class="el" href="mari_o_s__config_8h.html#a67fec9c24bb04cb745006de093b9bd62">mariOS_config.h</a>
 </li>
 <li>MARIOS_MINIMUM_TASK_STACK_SIZE
 : <a class="el" href="mari_o_s__config_8h.html#ad837efe163e90a0db9f2ddb5a01c63a3">mariOS_config.h</a>
@@ -203,6 +232,9 @@ $(function() {
 </li>
 <li>MARIOS_NONBLOCKING_QUEUE_OP
 : <a class="el" href="queue_8h.html#ae9a509b7a9a7c776d31c2e84252e553fad82f37cefe0c3f7d1c5b0ac99adca59c">queue.h</a>
+</li>
+<li>mariOS_priority
+: <a class="el" href="mari_o_s_8h.html#a7ecff202304f175f116b490195c8531b">mariOS.h</a>
 </li>
 <li>mariOS_queue
 : <a class="el" href="queue_8h.html#aff6e77e5eb7df3c39e46852e86dd458f">queue.h</a>
@@ -235,6 +267,9 @@ $(function() {
 : <a class="el" href="mari_o_s_8c.html#ab7b836592c7610e95c89ae7989b63d63">mariOS.c</a>
 , <a class="el" href="mari_o_s_8h.html#ab7b836592c7610e95c89ae7989b63d63">mariOS.h</a>
 </li>
+<li>MARIOS_SCHEDULER_FUNCTION
+: <a class="el" href="mari_o_s__config_8h.html#a298b1881468fec7e1b8f11f9c584d6d8">mariOS_config.h</a>
+</li>
 <li>mariOS_stack_t
 : <a class="el" href="mari_o_s_8h.html#a0e9e7935a080d32f806594571ee1f1d0">mariOS.h</a>
 </li>
@@ -248,12 +283,17 @@ $(function() {
 <li>marios_systick_handler()
 : <a class="el" href="mari_o_s_8c.html#a844a5d7dc246edfdb42ca178da349970">mariOS.c</a>
 </li>
+<li>mariOS_Task()
+: <a class="el" href="main_8c.html#a7a4493d54f5d2df33d2f348c0c94dbac">main.c</a>
+, <a class="el" href="mari_o_s_8h.html#ad499e8ab44f02231c506648fd9dd5176">mariOS.h</a>
+, <a class="el" href="main_8c.html#aef0620dd77ef831823a6be39708198bb">main.c</a>
+</li>
 <li>mariOS_task_id_t
 : <a class="el" href="mari_o_s_8h.html#aaf176d97d3dfba5ce3cce1e9b2db660f">mariOS.h</a>
 </li>
 <li>mariOS_task_init()
-: <a class="el" href="mari_o_s_8h.html#af84cc3fb915d6a38431cce3e3fd20a93">mariOS.h</a>
-, <a class="el" href="mari_o_s_8c.html#af84cc3fb915d6a38431cce3e3fd20a93">mariOS.c</a>
+: <a class="el" href="mari_o_s_8h.html#a6424fee0e9b0f7e092556e8d00770052">mariOS.h</a>
+, <a class="el" href="mari_o_s_8c.html#a6424fee0e9b0f7e092556e8d00770052">mariOS.c</a>
 </li>
 <li>MARIOS_TASK_STATUS_ACTIVE
 : <a class="el" href="mari_o_s_8h.html#a2d398ecdf64ae2d69b62a370306d7e24ab6c81fb28f66210779d61950f1969191">mariOS.h</a>
@@ -271,8 +311,8 @@ $(function() {
 : <a class="el" href="mari_o_s_8h.html#a2d398ecdf64ae2d69b62a370306d7e24a0c987ff1803a828918d4256e5ced9f93">mariOS.h</a>
 </li>
 <li>mariOS_task_yield()
-: <a class="el" href="mari_o_s_8c.html#aa1ce5071a73faddfee5255c059bcde9f">mariOS.c</a>
-, <a class="el" href="mari_o_s_8h.html#aa1ce5071a73faddfee5255c059bcde9f">mariOS.h</a>
+: <a class="el" href="mari_o_s_8h.html#aa1ce5071a73faddfee5255c059bcde9f">mariOS.h</a>
+, <a class="el" href="mari_o_s_8c.html#aa1ce5071a73faddfee5255c059bcde9f">mariOS.c</a>
 </li>
 <li>mariOS_ticks
 : <a class="el" href="mari_o_s_8c.html#a71c7a8b0b0dde73caf6861d169769df8">mariOS.c</a>
@@ -327,6 +367,9 @@ $(function() {
 <h3><a id="index_p"></a>- p -</h3><ul>
 <li>PendSV_Handler()
 : <a class="el" href="port_8h.html#a0eea14388b14c9e1baa3b040df2e243f">port.h</a>
+</li>
+<li>priority_scheduler()
+: <a class="el" href="mari_o_s_8c.html#ad84c0c0c30d720a7a39b816969d686a3">mariOS.c</a>
 </li>
 </ul>
 
@@ -404,7 +447,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 11 2018 15:06:15 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jan 22 2019 16:58:32 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

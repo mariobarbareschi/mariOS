@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">mariOS
-   &#160;<span id="projectnumber">0.1</span>
+   &#160;<span id="projectnumber">V1</span>
    </div>
    <div id="projectbrief">mariOS Answers the Request for an Implementation of an OS</div>
   </td>
@@ -93,16 +93,16 @@ $(function() {
 : <a class="el" href="stm32f4xx__it_8h.html#adbdfb05858cc36fc520974df37ec3cb0">stm32f4xx_it.h</a>
 </li>
 <li>dequeue()
-: <a class="el" href="queue_8c.html#a0e97fa79cc3ad6c2235d99e99ef107ec">queue.c</a>
-, <a class="el" href="queue_8h.html#a28d45eca570534d74c9e148f9d26fe99">queue.h</a>
+: <a class="el" href="queue_8c.html#a0cef5adfe08d8b560f04d8fc35f7435d">queue.c</a>
+, <a class="el" href="queue_8h.html#a5e5c21d80c074a62981ac6a56d393a03">queue.h</a>
 </li>
 </ul>
 
 
 <h3><a id="index_e"></a>- e -</h3><ul>
 <li>enqueue()
-: <a class="el" href="queue_8c.html#a840bf7d51dbc4a52e7cfd3234c2475f1">queue.c</a>
-, <a class="el" href="queue_8h.html#ad9d276ceb282ab1c8fb136f9c6374421">queue.h</a>
+: <a class="el" href="queue_8c.html#af2600ea86aed58f7522e21f26bf4bbf2">queue.c</a>
+, <a class="el" href="queue_8h.html#a25ba5ba80e3c68888396d272f5610c3f">queue.h</a>
 </li>
 <li>enter_critical_section()
 : <a class="el" href="port_8c.html#a22857ed9823f022f5988f9afdbb8994e">port.c</a>
@@ -123,9 +123,17 @@ $(function() {
 : <a class="el" href="mari_o_s_8c.html#a203ea856aabbfe98ca3f54e1ce235ed5">mariOS.c</a>
 , <a class="el" href="mari_o_s_8h.html#a203ea856aabbfe98ca3f54e1ce235ed5">mariOS.h</a>
 </li>
+<li>get_current_task_period()
+: <a class="el" href="mari_o_s_8c.html#a2d4e0157eed613903bec74697a98b717">mariOS.c</a>
+, <a class="el" href="mari_o_s_8h.html#a2d4e0157eed613903bec74697a98b717">mariOS.h</a>
+</li>
 <li>get_current_task_status()
 : <a class="el" href="mari_o_s_8c.html#a72e631d3a2ed9e11836f0f1149ba65b2">mariOS.c</a>
 , <a class="el" href="mari_o_s_8h.html#a72e631d3a2ed9e11836f0f1149ba65b2">mariOS.h</a>
+</li>
+<li>get_idle_percentage()
+: <a class="el" href="mari_o_s_8c.html#aec5d00cc037e0a900dc097f8065b4d01">mariOS.c</a>
+, <a class="el" href="mari_o_s_8h.html#aec5d00cc037e0a900dc097f8065b4d01">mariOS.h</a>
 </li>
 <li>get_task_status()
 : <a class="el" href="mari_o_s_8c.html#a228860664d47f77e7b5b7195b0242021">mariOS.c</a>
@@ -153,8 +161,11 @@ $(function() {
 <li>main()
 : <a class="el" href="main_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main.c</a>
 </li>
+<li>mariOS_active_after()
+: <a class="el" href="mari_o_s_8c.html#a711b8b2784a0430552465a537d24ef8a">mariOS.c</a>
+</li>
 <li>mariOS_delay()
-: <a class="el" href="mari_o_s_8c.html#a8027dcd13880c2971f3627b052b481b3">mariOS.c</a>
+: <a class="el" href="mari_o_s_8c.html#a9c401697a65239a5eb970fcfedff9a7a">mariOS.c</a>
 , <a class="el" href="mari_o_s_8h.html#a8027dcd13880c2971f3627b052b481b3">mariOS.h</a>
 </li>
 <li>mariOS_init()
@@ -175,9 +186,12 @@ $(function() {
 <li>marios_systick_handler()
 : <a class="el" href="mari_o_s_8c.html#a844a5d7dc246edfdb42ca178da349970">mariOS.c</a>
 </li>
+<li>mariOS_Task()
+: <a class="el" href="main_8c.html#a7a4493d54f5d2df33d2f348c0c94dbac">main.c</a>
+</li>
 <li>mariOS_task_init()
-: <a class="el" href="mari_o_s_8c.html#af84cc3fb915d6a38431cce3e3fd20a93">mariOS.c</a>
-, <a class="el" href="mari_o_s_8h.html#af84cc3fb915d6a38431cce3e3fd20a93">mariOS.h</a>
+: <a class="el" href="mari_o_s_8c.html#a6424fee0e9b0f7e092556e8d00770052">mariOS.c</a>
+, <a class="el" href="mari_o_s_8h.html#a6424fee0e9b0f7e092556e8d00770052">mariOS.h</a>
 </li>
 <li>mariOS_task_yield()
 : <a class="el" href="mari_o_s_8c.html#aa1ce5071a73faddfee5255c059bcde9f">mariOS.c</a>
@@ -233,6 +247,9 @@ $(function() {
 <h3><a id="index_p"></a>- p -</h3><ul>
 <li>PendSV_Handler()
 : <a class="el" href="port_8h.html#a0eea14388b14c9e1baa3b040df2e243f">port.h</a>
+</li>
+<li>priority_scheduler()
+: <a class="el" href="mari_o_s_8c.html#ad84c0c0c30d720a7a39b816969d686a3">mariOS.c</a>
 </li>
 </ul>
 
@@ -290,7 +307,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 11 2018 15:06:15 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jan 22 2019 16:58:32 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

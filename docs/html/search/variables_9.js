@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['tail',['tail',['../structqueue__t.html#adf98f27497905236d9782e06747d89d6',1,'queue_t']]],
-  ['tasks',['tasks',['../mari_o_s_8c.html#a590c9d277e19144fcf211d9f4918fd93',1,'mariOS.c']]],
-  ['tasks_5fwaiting_5fto_5freceive',['tasks_waiting_to_receive',['../structqueue__t.html#a93aef13d250c24044e5c5642363adcc2',1,'queue_t']]],
-  ['tasks_5fwaiting_5fto_5fsend',['tasks_waiting_to_send',['../structqueue__t.html#aa634f12fb1d05a0065b87cde43cc2c89',1,'queue_t']]]
+  ['size',['size',['../structqueue__t.html#a0b109c1e636c7826326f780e0af75c8e',1,'queue_t::size()'],['../mari_o_s_8c.html#aaba88b24a21a6c70c895c0d55f4a69a0',1,'size():&#160;mariOS.c']]],
+  ['sp',['sp',['../structmari_o_s__task__control__block__t.html#ae19a9b5abedc608ed8d44ae0650e96e7',1,'mariOS_task_control_block_t']]],
+  ['status',['status',['../structmari_o_s__task__control__block__t.html#a5082b84f19bfae639ede5668f9ea48cc',1,'mariOS_task_control_block_t']]],
+  ['systemcoreclock',['SystemCoreClock',['../group___s_t_m32_f4xx___system___private___variables.html#gaa3cd3e43291e81e795d642b79b6088e6',1,'system_stm32f4xx.c']]]
 ];

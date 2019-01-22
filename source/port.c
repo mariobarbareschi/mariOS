@@ -161,7 +161,7 @@ void exit_critical_sction()
 
 int configureSystick(uint32_t systick_ticks)
 {
-	uint32_t ret_val = SysTick_Config(SystemCoreClock/systick_ticks);
+	uint32_t ret_val = SysTick_Config(systick_ticks);
 	if (ret_val != 0)
 		return -1;
 }

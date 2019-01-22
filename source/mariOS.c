@@ -61,14 +61,30 @@ mariOS_task_control_block_t* volatile mariOS_curr_task;
 mariOS_task_control_block_t* volatile mariOS_next_task;
 
 /**
+ * This values reports, in percentage, the execution of idle
+ * during the scheduling lifetime. The value is update each time idle is
+ * scheduled in a different mariOS time slice window.
+ */
+volatile uint8_t marios_idle_value = 0;
+
+/**
  * mariOS_idle is the system idle task. It should be modified accordingly to
  * the system's needs.
  */
 static void mariOS_idle()
 {
 	volatile uint64_t idleCount = 0;
+	volatile uint64_t max_idleCount = 83;
+	uint32_t last_marios_tick = 0;
 	while (1){
 		idleCount++;
+		if(last_marios_tick != mariOS_ticks){
+			marios_idle_value = idleCount*100/(max_idleCount*(mariOS_ticks-last_marios_tick));
+			if(max_idleCount < idleCount / (mariOS_ticks-last_marios_tick))
+				max_idleCount = idleCount / (mariOS_ticks-last_marios_tick);
+			last_marios_tick = mariOS_ticks;
+			idleCount = 0;
+		}
 		__disable_irq(); //Here the yield must be protected against other incoming interrupts
 		mariOS_task_yield();
 		__enable_irq();
@@ -95,10 +111,10 @@ void mariOS_init(void)
 	 * Current idle process implementation does not need a lot of space,
 	 * even though its minimum size depends on the target architecture.
 	 */
-	mariOS_task_init(mariOS_idle, MARIOS_IDLE_TASK_STACK);
+	mariOS_task_init(mariOS_idle, MARIOS_IDLE_TASK_STACK, 0, 0);
 }
 
-mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size)
+mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size, mariOS_priority priority, uint32_t period)
 {
 	if (mariOS_tasks_list.size >= MARIOS_CONFIG_MAX_TASKS-1)
 		return -1;
@@ -113,6 +129,8 @@ mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size)
 	p_task->sp = (uint32_t)(p_stack+stack_size-16);
 	p_task->status = MARIOS_TASK_STATUS_READY;
 	p_task->wait_ticks = 0;
+	p_task->priority = priority;
+	p_task->period = MARIOS_CONFIG_SYSTICK_FREQ_DIV*period/1000;
 
 	/* Here some special registers are defined and they  will be restored on exception return, namely:
 	   - XPSR: Default value (0x01000000)
@@ -185,6 +203,46 @@ void round_robin_scheduler(){
 	}
 }
 
+void priority_scheduler()
+{
+	int i;
+	//Let's save the task ID which has to be replaced
+	//This information is useful to check if such a task is hanging the CPU
+	mariOS_task_id_t last_active_task = mariOS_tasks_list.current_active_task;
+
+	// Let's bet idle is the ready task with the highest priority
+	mariOS_task_id_t task_to_be_load = 0;
+
+	//Now, we need to loop overall tasks of the system
+	for(i = 1; i < mariOS_tasks_list.size; i++)
+	{
+		if(MARIOS_TASK_STATUS_READY == mariOS_tasks_list.tasks[i].status) // If the i-th task is ready
+		{
+			if(mariOS_tasks_list.tasks[i].priority > mariOS_tasks_list.tasks[task_to_be_load].priority) // If its priority is greater than the previous picked
+			{
+				if(last_active_task == i && //And the candidate is not hanging the CPU and not missed its own deadline
+				  (mariOS_ticks - mariOS_tasks_list.tasks[i].last_activation_time) < mariOS_tasks_list.tasks[i].period)
+				{
+					task_to_be_load = i;
+				} else if(task_to_be_load == 0) //Otherwise, if it is the same task scheduled before or if it is
+												//hanging the CPU, but we are seeking a task to substitute the idle
+												//it is ok the same
+				{
+					task_to_be_load = i;
+				}
+			}
+		}
+	}
+
+	//It is important to keep update the scheduled time, so the last time (in mariOS Tick) on which a task has been scheduled
+	if(task_to_be_load != last_active_task)
+	{
+		mariOS_tasks_list.tasks[task_to_be_load].last_activation_time = mariOS_ticks;
+	}
+
+	mariOS_tasks_list.current_active_task = task_to_be_load;
+}
+
 void mariOS_scheduler(void)
 {
 	/** Retrieve the current active task*/
@@ -195,13 +253,17 @@ void mariOS_scheduler(void)
 		mariOS_curr_task->status = MARIOS_TASK_STATUS_READY;
 
 	/** Now, we need to pick the next task: */
-	round_robin_scheduler();
+	MARIOS_SCHEDULER_FUNCTION();
 
 	mariOS_next_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task];
 	mariOS_next_task->status = MARIOS_TASK_STATUS_ACTIVE;
 }
 
-void mariOS_delay(uint32_t ticks){
+void mariOS_delay(uint32_t millisec){
+	mariOS_active_after(MARIOS_CONFIG_SYSTICK_FREQ_DIV*millisec/1000);
+}
+
+void mariOS_active_after(uint32_t ticks){
 	if(0 != ticks)
 	{
 		enter_critical_section(); //Here the yield and scheduling must be protected against other incoming interrupts
@@ -234,7 +296,16 @@ mariOS_task_status_t get_task_status(mariOS_task_id_t task_id)
 	return mariOS_tasks_list.tasks[task_id].status;
 }
 
+uint32_t get_current_task_period(void)
+{
+	return mariOS_tasks_list.tasks[mariOS_tasks_list.current_active_task].period;
+}
+
 mariOS_task_status_t get_current_task_status(void)
 {
 	return get_task_status(mariOS_tasks_list.current_active_task);
+}
+
+uint8_t get_idle_percentage(void){
+	return marios_idle_value;
 }

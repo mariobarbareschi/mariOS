@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">mariOS
-   &#160;<span id="projectnumber">0.1</span>
+   &#160;<span id="projectnumber">V1</span>
    </div>
    <div id="projectbrief">mariOS Answers the Request for an Implementation of an OS</div>
   </td>
@@ -76,16 +76,12 @@ $(function() {
 <div class="textblock"><code>#include &quot;stm32f4xx_hal.h&quot;</code><br />
 <code>#include &quot;stm32f4xx.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="stm32f4xx__it_8h_source.html">stm32f4xx_it.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="mari_o_s_8h_source.html">mariOS.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for stm32f4xx_it.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="stm32f4xx__it_8c__incl.png" border="0" usemap="#example_2stm32f4xx__it_8c" alt=""/></div>
 <map name="example_2stm32f4xx__it_8c" id="example_2stm32f4xx__it_8c">
-<area shape="rect" id="node4" href="stm32f4xx__it_8h.html" title="stm32f4xx_it.h" alt="" coords="176,80,263,107"/>
-<area shape="rect" id="node5" href="mari_o_s_8h.html" title="Header file of main functionalities of mariOS. This file provides the mariOS task status enum..." alt="" coords="287,80,351,107"/>
-<area shape="rect" id="node6" href="mari_o_s__config_8h.html" title="This file contains definitions and macros intended to configure and modify some static parameters of ..." alt="" coords="175,155,271,181"/>
-<area shape="rect" id="node7" href="port_8h.html" title="This header file specifies functions that are needed to mariOS for being executed onto a specific arc..." alt="" coords="295,155,343,181"/>
+<area shape="rect" id="node4" href="stm32f4xx__it_8h.html" title="stm32f4xx_it.h" alt="" coords="224,80,311,107"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -132,7 +128,7 @@ Functions</h2></td></tr>
 </dl>
 
 <p class="reference">References <a class="el" href="cmsis__os_8c.html#ad0262e4688e95d1e9038afd9bcc16001">osKernelSysTick()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        HAL_IncTick();</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        HAL_SYSTICK_IRQHandler();</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#ifdef USE_RTOS_SYSTICK</span></div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <a class="code" href="cmsis__os_8c.html#ad0262e4688e95d1e9038afd9bcc16001">osKernelSysTick</a>();</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#endif</span></div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div><div class="ttc" id="cmsis__os_8c_html_ad0262e4688e95d1e9038afd9bcc16001"><div class="ttname"><a href="cmsis__os_8c.html#ad0262e4688e95d1e9038afd9bcc16001">osKernelSysTick</a></div><div class="ttdeci">uint32_t osKernelSysTick(void)</div><div class="ttdef"><b>Definition:</b> cmsis_os.c:13</div></div>
+<div class="fragment"><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        HAL_IncTick();</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        HAL_SYSTICK_IRQHandler();</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#ifdef USE_RTOS_SYSTICK</span></div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <a class="code" href="cmsis__os_8c.html#ad0262e4688e95d1e9038afd9bcc16001">osKernelSysTick</a>();</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#endif</span></div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div><div class="ttc" id="cmsis__os_8c_html_ad0262e4688e95d1e9038afd9bcc16001"><div class="ttname"><a href="cmsis__os_8c.html#ad0262e4688e95d1e9038afd9bcc16001">osKernelSysTick</a></div><div class="ttdeci">uint32_t osKernelSysTick(void)</div><div class="ttdef"><b>Definition:</b> cmsis_os.c:13</div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -148,7 +144,7 @@ Here is the call graph for this function:</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jul 11 2018 15:06:15 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jan 22 2019 16:58:31 for mariOS by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.13
 </small></address>

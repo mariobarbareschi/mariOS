@@ -42,6 +42,13 @@
 
 typedef uint32_t mariOS_stack_t;
 typedef uint16_t mariOS_task_id_t;
+typedef uint8_t mariOS_priority;
+
+
+#define mariOS_Task(taskname) static void taskname(void)
+#define mariOS_begin_periodic do{
+#define mariOS_end_periodic mariOS_active_after(get_current_task_period());\
+							}while (1)
 
 /**
  * The mariOS_task_status_t is the enumerative type that mariOS exploits
@@ -92,7 +99,10 @@ typedef struct
 	void (*handler)(void);
 	volatile mariOS_task_status_t status;
 	volatile uint32_t last_active_time;
+	volatile uint32_t last_activation_time;
 	volatile uint32_t wait_ticks;
+	volatile mariOS_priority priority;
+	volatile uint32_t period;
 } mariOS_task_control_block_t;
 
 /**
@@ -115,11 +125,17 @@ void mariOS_init(void);
  * Status of each created task is set to MARIOS_TASK_STATUS_READY, meant that
  * the scheduler may pick it to be the current executed task, setting it to the
  * status ::MARIOS_TASK_STATUS_ACTIVE.
+ *
+ * MariOS tasks are defined with a priority, which can be potentially used
+ * by the scheduling algorithm
+ *
  * @param [in] handler is the function pointer
  * @param [in] stack_size decides the size of the task's stack
+ * @param [in] priority is the priority value assigned to the task
+ * @param [in] period is the period value (in milliseconds) assigned to the task
  * @retval None
  */
-mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size);
+mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size, mariOS_priority priority, uint32_t period);
 
 /**
  * @brief This function makes mariOS started, meant that the system's timer has to\\
@@ -243,12 +259,28 @@ void set_task_status(mariOS_task_id_t task_id, mariOS_task_status_t status);
 mariOS_task_status_t get_current_task_status(void);
 
 /**
+ * @brief This accessory function returns the period of the current active task
+ *
+ * @param None
+ * @return mariOS_task_status of the current active task
+ */
+uint32_t get_current_task_period(void);
+
+/**
  * @brief This accessory function returns the status of a given task
  *
  * @param [in] task_id is the ID of the task
  * @return mariOS_task_status of the task_id task
  */
 mariOS_task_status_t get_task_status(mariOS_task_id_t task_id);
+
+/**
+ * @brief This function returns, in percentage, the idle of the processor
+ *
+ * @param None
+ * @return the idle of the processor, between 0 and 100
+ */
+uint8_t get_idle_percentage(void);
 
 
 #endif

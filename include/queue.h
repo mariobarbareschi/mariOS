@@ -148,7 +148,7 @@ mariOS_queue* createQueue(unsigned int size);
  * @param [in] blocking specifies if the enqueue is blocking or not
  * @return operation success or failure
  */
-mariOS_queue_op_status_t enqueue(mariOS_queue* queue, int8_t* msg, unsigned int size, mariOS_blocking_queue_op_t blocking);
+mariOS_queue_op_status_t enqueue(mariOS_queue* queue, uint8_t* msg, unsigned int size, mariOS_blocking_queue_op_t blocking);
 
 /**
  * @brief The dequeue function tries to pull a message from the specified
@@ -184,7 +184,7 @@ mariOS_queue_op_status_t enqueue(mariOS_queue* queue, int8_t* msg, unsigned int 
  * @param [in] blocking specifies if the dequeue is blocking or not
  * @return operation success or failure
  */
-mariOS_queue_op_status_t dequeue(mariOS_queue* queue, int8_t* msg, unsigned int size, mariOS_blocking_queue_op_t blocking);
+mariOS_queue_op_status_t dequeue(mariOS_queue* queue, uint8_t* msg, unsigned int size, mariOS_blocking_queue_op_t blocking);
 
 /**
  * @brief The function restore the queue in a pristine state.
