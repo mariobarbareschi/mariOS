@@ -13,7 +13,7 @@ mariOS Answers the Request for an Implementation of OS
 ## About
 The project implements a very easy and tiny core that supports:
   * tasks creation and local stack definition
-  * round-robin time-sharing scheduling
+  * fixed-priority scheduling
   * preemption and explicit task yield
   * task preemptive delay function
   * blocking and non-blocking queue-based tasks communication
