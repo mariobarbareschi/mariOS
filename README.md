@@ -1,6 +1,13 @@
-# mariOS
 
-mariOS Answers the Request for an Implementation of an OS
+![Banner](https://d.wattpad.com/story_parts/488157334/images/14f211bab33f56fc351331339007.gif)
+=====
+
+![License](https://img.shields.io/badge/License-AGPL3.0-blue.svg)![Version](https://img.shields.io/badge/mariOS-V1-green.svg)
+
+
+mariOS
+=====
+mariOS Answers the Request for an Implementation of OS
 
 ---------
 ## About
@@ -26,3 +33,5 @@ For your comodity, check it out the docs folder: https://mariobarbareschi.github
 ### Contributing
 Github is for social coding.
 If you want to write code, I encourage contributions through pull requests from forks of this repository.
+ 
+
