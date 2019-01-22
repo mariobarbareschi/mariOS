@@ -36,7 +36,7 @@ int main(void)
 	BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_GPIO);
 
 	osKernelInitialize();
-	osThreadDef_t task1 = {task1_handler, 40, 4, 500};
+	osThreadDef_t task1 = {task1_handler, 40, 4, 40};
 	osThreadDef_t task2 = {task2_handler, 40, 3, 500};
 	osThreadDef_t task3 = {task3_handler, 40, 2, 500};
 	osThreadDef_t task4 = {task4_handler, 40, 99, 50};
@@ -69,8 +69,12 @@ mariOS_Task(task1_handler)
 	mariOS_begin_periodic
 	{
 		BSP_LED_Toggle(LED4);
-		outcoming_msg = 1-outcoming_msg;
-		enqueue(queueMsgt1_t2, (uint8_t*)&outcoming_msg, sizeof(uint32_t), MARIOS_NONBLOCKING_QUEUE_OP);
+		mariOS_queue_op_status_t status = enqueue(queueMsgt1_t2,
+												  (uint8_t*)&outcoming_msg,
+												  sizeof(uint32_t),
+												  MARIOS_NONBLOCKING_QUEUE_OP);
+		if(MARIOS_QUEUE_SUCCESS_OP == status)
+			outcoming_msg=1-outcoming_msg;
 	}
 	mariOS_end_periodic;
 }
