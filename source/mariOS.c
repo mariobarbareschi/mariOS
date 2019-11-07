@@ -103,6 +103,9 @@ static void task_completion(void)
 		i++;
 }
 
+static mariOS_stack_t* idle_stack[MARIOS_IDLE_TASK_STACK] __attribute__ ((aligned (4)));
+
+
 void mariOS_init(void)
 {
 	memset(&mariOS_tasks_list, 0, sizeof(mariOS_tasks_list));
@@ -111,10 +114,10 @@ void mariOS_init(void)
 	 * Current idle process implementation does not need a lot of space,
 	 * even though its minimum size depends on the target architecture.
 	 */
-	mariOS_task_init(mariOS_idle, MARIOS_IDLE_TASK_STACK, 0, 0);
+	mariOS_task_init(mariOS_idle, idle_stack, MARIOS_IDLE_TASK_STACK+1, 0, 0);
 }
 
-mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size, mariOS_priority priority, uint32_t period)
+mariOS_task_id_t mariOS_task_init(void (*handler)(void), mariOS_stack_t* stack_ptr, uint32_t stack_size, mariOS_priority priority, uint32_t period)
 {
 	if (mariOS_tasks_list.size >= MARIOS_CONFIG_MAX_TASKS-1)
 		return -1;
@@ -123,10 +126,12 @@ mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size, ma
 	   minus 16 words (64 bytes) to leave space for storing 16 registers: */
 	mariOS_task_control_block_t *p_task = &mariOS_tasks_list.tasks[mariOS_tasks_list.size];
 	p_task->handler = handler;
-	if(MARIOS_MINIMUM_TASK_STACK_SIZE >= stack_size)
-		stack_size = MARIOS_MINIMUM_TASK_STACK_SIZE;
-	mariOS_stack_t *p_stack = malloc(stack_size*sizeof(mariOS_stack_t));
-	p_task->sp = (uint32_t)(p_stack+stack_size-16);
+	if(MARIOS_MINIMUM_TASK_STACK_SIZE > stack_size)
+		return -1;
+		//stack_size = MARIOS_MINIMUM_TASK_STACK_SIZE;
+	//mariOS_stack_t *p_stack = malloc(stack_size*sizeof(mariOS_stack_t));
+	mariOS_stack_t *p_stack = stack_ptr;
+	p_task->sp = (uint32_t*)(p_stack+stack_size-16);
 	p_task->status = MARIOS_TASK_STATUS_READY;
 	p_task->wait_ticks = 0;
 	p_task->priority = priority;

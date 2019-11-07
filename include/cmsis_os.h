@@ -173,6 +173,7 @@ typedef struct os_mailQ_cb *osMailQId;
 /// \note CAN BE CHANGED: \b os_thread_def is implementation specific in every CMSIS-RTOS.
 typedef struct os_thread_def  {
   os_pthread               pthread;    ///< start address of thread function
+  uint32_t*               stack_ptr;    ///< stack pointer
   uint32_t               stacksize;    ///< stack size requirements in bytes; 0 is default stack size
   uint8_t               priority;    ///< priority of the task
   uint8_t               period;    ///< period of the task in milliseconds

@@ -110,10 +110,11 @@ typedef struct queue_t
 /**
  * @brief The function initialize a mariOS_queue structure with a specified size.
  *
+ * @param [in] buffer used as queue's memory
  * @param [in] size is the queue size in bytes
  * @return pointer to the ::mariOS_queue created
  */
-mariOS_queue* createQueue(unsigned int size);
+mariOS_queue* createQueue(uint8_t* buffer, unsigned int size);
 
 /**
  * @brief The enqueue function tries to put a message onto the specified \

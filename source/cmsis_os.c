@@ -17,7 +17,7 @@ uint32_t osKernelSysTick(void)
 
 osThreadId osThreadCreate (const osThreadDef_t *thread_def, void *argument)
 {
-	return mariOS_task_init(thread_def->pthread, thread_def->stacksize, thread_def->priority, thread_def->period);
+	return mariOS_task_init(thread_def->pthread, thread_def->stack_ptr, thread_def->stacksize, thread_def->priority, thread_def->period);
   
 }
 

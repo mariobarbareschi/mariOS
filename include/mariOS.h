@@ -44,9 +44,16 @@ typedef uint32_t mariOS_stack_t;
 typedef uint16_t mariOS_task_id_t;
 typedef uint8_t mariOS_priority;
 
+#define mariOS_Task_Define(taskname, stack, size) static void taskname(void);\
+												  static mariOS_stack_t stack[size] __attribute__ ((aligned (4)))
+
+#define mariOS_Queue_Define(queue_name, queue_buffer, size) static mariOS_queue* queue_name;\
+													   static uint8_t queue_buffer[size];
 
 #define mariOS_Task(taskname) static void taskname(void)
+
 #define mariOS_begin_periodic do{
+
 #define mariOS_end_periodic mariOS_active_after(get_current_task_period());\
 							}while (1)
 
@@ -130,12 +137,13 @@ void mariOS_init(void);
  * by the scheduling algorithm
  *
  * @param [in] handler is the function pointer
+ * @param [in] stack_ptr is the stack pointer
  * @param [in] stack_size decides the size of the task's stack
  * @param [in] priority is the priority value assigned to the task
  * @param [in] period is the period value (in milliseconds) assigned to the task
  * @retval None
  */
-mariOS_task_id_t mariOS_task_init(void (*handler)(void), uint32_t stack_size, mariOS_priority priority, uint32_t period);
+mariOS_task_id_t mariOS_task_init(void (*handler)(void), mariOS_stack_t* stack_ptr, uint32_t stack_size, mariOS_priority priority, uint32_t period);
 
 /**
  * @brief This function makes mariOS started, meant that the system's timer has to\\

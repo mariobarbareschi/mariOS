@@ -31,11 +31,12 @@
 
 #include "queue.h"
 
-mariOS_queue* createQueue(unsigned int size)
+mariOS_queue* createQueue(uint8_t* buffer, unsigned int size)
 {
 	mariOS_queue* queue = (mariOS_queue*) malloc(sizeof(mariOS_queue));
 	queue->size = size;
-	queue->queueMemory = malloc(size);
+	queue->queueMemory = buffer;
+	//queue->queueMemory = malloc(size);
 	queue->rLock = MARIOS_QUEUE_UNLOCKED; /** we assume to create an unlocked queue */
 	queue->wLock = MARIOS_QUEUE_UNLOCKED;
 	reset_queue(queue); /** reset_queue() is used to perform remaining initializations */
