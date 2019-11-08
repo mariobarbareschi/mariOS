@@ -34,7 +34,8 @@
 #include "port.h"
 
 
-void loadFirstTask(){
+void loadFirstTask()
+{
 	__asm volatile(	//" ldr r0,=_estack 		\n" //Take the original master stack pointer from the system startup
 			" ldr R0,=0xE000ED08 	\n" //Set R0 to VTOR address
 			" ldr r0, [r0] 			\n" //Load VTOR
@@ -51,7 +52,8 @@ void loadFirstTask(){
 
 }
 
-void SVC_Handler(){
+void SVC_Handler()
+{
 	__asm volatile(
 			" ldr	r2,=mariOS_curr_task 		\n"
 			" ldr r1, [r2]						\n"
@@ -69,8 +71,47 @@ void SVC_Handler(){
 	);
 }
 
+uint32_t* initialize_Stack(uint32_t* stack_ptr, void (*task_handler)(void), void (*task_completion)(void))
+{
+	/* The stack pointer is currently pointing to its lower position.
+	 * Some register must be configured as they will be restored on exception return, namely:
+   	 *  - XPSR: Default value (0x01000000)
+   	 *  - PC: Point to the handler function
+   	 *  - LR: Point to a function to be called when the handler returns
+   	 *  Other general registers can be restored, even though we left them uninitialized.
+   	 *  Consequently, at the end of this function, the stack pointer must grow of 64 bytes
+   	 */
+	*(stack_ptr) = 0x01000000;
+	stack_ptr--;
+	*(stack_ptr) = (uint32_t)task_handler;
+	stack_ptr--;
+	*(stack_ptr) = (uint32_t)task_completion;
+	return stack_ptr-(16-3);
+	/*
+	+------+
+	|      | <- SP now (64 bytes far from lower bound)
+	|  R4  | empty
+	|  R5  | empty
+	|  R6  | empty
+	|  R7  | empty
+	|  R8  | empty
+	|  R9  | empty
+	| R10  | empty
+	| R11  | empty
+	|  R1  | empty
+	|  R2  | empty
+	|  R3  | empty
+	| R12  | empty
+	|  LR  | task_completion
+	|  PC  | task_handler
+	| xPSR | 0x01000000
+	|      | <- SP outbound
+	+------+
+	*/
+}
 
-__attribute__(( naked )) void PendSV_Handler(){
+__attribute__(( naked )) void PendSV_Handler()
+{
 	__asm volatile(	/* Disable interrupts: */
 			" cpsid	i 					\n"
 			//Since entering this handler is due to NVIC, first 4 regs have been already pushed onto the stack
@@ -144,7 +185,8 @@ __attribute__(( naked )) void PendSV_Handler(){
 }
 
 
-void yield(){
+void yield()
+{
 	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
 	__DSB(); //__asm volatile( "dsb" );
 	__ISB(); //__asm volatile( "isb" );

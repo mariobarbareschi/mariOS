@@ -63,6 +63,17 @@ void loadFirstTask();
 void SVC_Handler();
 
 /**
+ * @brief This function handles the initialization of the stack accordingly to the
+ * processor architecture. It receives the current stack pointer, the task
+ * handler and the task to be called at the completion. The function returns the
+ * ponter to a proper position that can be successfully used by context switch handlers.
+ *
+ * @param stack_ptr is the pointer to the last stack position
+ * @retval the new value of the stack pointer
+ */
+uint32_t* initialize_Stack(uint32_t* stack_ptr, void (*task_handler)(void), void (*task_completion)(void));
+
+/**
  * @brief MariOS achieves the context switch by triggering the PendSV interrupt.
  * For ARM architectures, PendSV is an interrupt-driven request for system-level
  * service mainly used to completes the context switch. The function body is

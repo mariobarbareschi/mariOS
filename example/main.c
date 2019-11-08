@@ -15,15 +15,15 @@
 #include "cmsis_os.h"
 #include "queue.h"
 
-static void task1_handler(void);
-static void task2_handler(void);
-static void task3_handler(void);
-static void task4_handler(void);
-static void task5_handler(void);
+mariOS_Task_Define(task1_handler, task1_stack, 40);
+mariOS_Task_Define(task2_handler, task2_stack, 40);
+mariOS_Task_Define(task3_handler, task3_stack, 40);
+mariOS_Task_Define(task4_handler, task4_stack, 40);
+mariOS_Task_Define(task5_handler, task5_stack, 40);
 
-static mariOS_queue* queueMsgt4_t5;
-static mariOS_queue* queueMsgt1_t2;
-static mariOS_queue* queueMsgt2_t3;
+mariOS_Queue_Define(queueMsgt4_t5, queuet1_t4_buffer, 10*sizeof(uint32_t));
+mariOS_Queue_Define(queueMsgt1_t2, queuet2_t3_buffer, 10*sizeof(uint32_t));
+mariOS_Queue_Define(queueMsgt2_t3, queuet4_t5_buffer, 10*sizeof(uint32_t));
 
 int main(void)
 {
@@ -36,20 +36,20 @@ int main(void)
 	BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_GPIO);
 
 	osKernelInitialize();
-	osThreadDef_t task1 = {task1_handler, 40, 4, 40};
-	osThreadDef_t task2 = {task2_handler, 40, 3, 500};
-	osThreadDef_t task3 = {task3_handler, 40, 2, 500};
-	osThreadDef_t task4 = {task4_handler, 40, 99, 50};
-	osThreadDef_t task5 = {task5_handler, 40, 1, 50};
+	osThreadDef_t task1 = {task1_handler, task1_stack, 40, 4, 40};
+	osThreadDef_t task2 = {task2_handler, task2_stack, 40, 3, 500};
+	osThreadDef_t task3 = {task3_handler, task3_stack, 40, 2, 500};
+	osThreadDef_t task4 = {task4_handler, task4_stack, 40, 99, 50};
+	osThreadDef_t task5 = {task5_handler, task5_stack, 40, 1, 50};
 	osThreadCreate(&task1, NULL);
 	osThreadCreate(&task2, NULL);
 	osThreadCreate(&task3, NULL);
 	osThreadCreate(&task4, NULL);
 	osThreadCreate(&task5, NULL);
 
-	queueMsgt1_t2 = createQueue(sizeof(uint32_t)*10);
-	queueMsgt2_t3 = createQueue(sizeof(uint32_t)*10);
-	queueMsgt4_t5 = createQueue(sizeof(uint32_t)*10);
+	queueMsgt1_t2 = createQueue(queuet1_t4_buffer, sizeof(uint32_t)*10);
+	queueMsgt2_t3 = createQueue(queuet2_t3_buffer, sizeof(uint32_t)*10);
+	queueMsgt4_t5 = createQueue(queuet4_t5_buffer, sizeof(uint32_t)*10);
 
 	BSP_LED_Off(LED3);
 

@@ -40,22 +40,52 @@
 #include <string.h> //memcpy
 #include <stdlib.h> //malloc
 
+/**
+ * mariOS defines the stack as a long word 64-bits long.
+ * This way the stack is forced to be aligned to 4 and push
+ * and pop can be performed on every byte-group.
+ */
 typedef uint32_t mariOS_stack_t;
+
+/**
+ * mariOS task ID is defined as a 16-bit long unsigned integer.
+ * This means that it does support 65535 different tasks
+ */
 typedef uint16_t mariOS_task_id_t;
+
+/**
+ * mariOS defines different priority levels.
+ * Minimum priority is fixed to 0, while the maximum priority can be
+ * conveniently configured by giving value to macro MARIOS_MAXIMUM_PRIORITY
+ */
 typedef uint8_t mariOS_priority;
 
+/**
+ * This macro simplifies operations to define a mariOS task.
+ * It manages the definition of the task handler and its own stack.
+ */
 #define mariOS_Task_Define(taskname, stack, size) static void taskname(void);\
 												  static mariOS_stack_t stack[size] __attribute__ ((aligned (4)))
 
+/**
+ * This macro simplifies operations to define a mariOS Queue.
+ * It manages the definition of a communication queue and its own memory buffer.
+ */
 #define mariOS_Queue_Define(queue_name, queue_buffer, size) static mariOS_queue* queue_name;\
 													   static uint8_t queue_buffer[size];
-
-#define mariOS_Task(taskname) static void taskname(void)
-
+/**
+ * There two following macros can be suitably used during the task definition.
+ * The programmer needs to include the task periodic code between such two macros.
+ */
 #define mariOS_begin_periodic do{
 
 #define mariOS_end_periodic mariOS_active_after(get_current_task_period());\
 							}while (1)
+/**
+ * This macro simplifies operations to implement a mariOS task.
+ * It manages the declaration of the task for the programmer.
+ */
+#define mariOS_Task(taskname) static void taskname(void)
 
 /**
  * The mariOS_task_status_t is the enumerative type that mariOS exploits

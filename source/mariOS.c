@@ -131,20 +131,15 @@ mariOS_task_id_t mariOS_task_init(void (*handler)(void), mariOS_stack_t* stack_p
 		//stack_size = MARIOS_MINIMUM_TASK_STACK_SIZE;
 	//mariOS_stack_t *p_stack = malloc(stack_size*sizeof(mariOS_stack_t));
 	mariOS_stack_t *p_stack = stack_ptr;
-	p_task->sp = (uint32_t*)(p_stack+stack_size-16);
 	p_task->status = MARIOS_TASK_STATUS_READY;
 	p_task->wait_ticks = 0;
 	p_task->priority = priority;
 	p_task->period = MARIOS_CONFIG_SYSTICK_FREQ_DIV*period/1000;
 
-	/* Here some special registers are defined and they  will be restored on exception return, namely:
-	   - XPSR: Default value (0x01000000)
-	   - PC: Point to the handler function
-	   - LR: Point to a function to be called when the handler returns */
-	p_stack[stack_size-1] = 0x01000000;
-	p_stack[stack_size-2] = (uint32_t)handler;
-	p_stack[stack_size-3] = (uint32_t) &task_completion;
+	//Here we push the stack to it's lower limit, preparing it for the initialization
+	p_stack += stack_size-1;
 
+	p_task->sp = initialize_Stack(p_stack, handler, task_completion);
 	mariOS_tasks_list.size++;
 
 	/** The taskID of tasks starts from 0, while mariOS_idle does not have any ID, even though its index is 0 */
